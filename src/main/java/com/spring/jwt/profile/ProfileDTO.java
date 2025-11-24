@@ -1,7 +1,6 @@
 package com.spring.jwt.profile;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +29,8 @@ public class ProfileDTO {
     @Size(max = 45, message = "District cannot exceed 45 characters")
     private String district;
     @NotNull(message = "Pincode cannot be empty")
-    @Size(max = 45, message = "Pincode cannot exceed 45 characters")
+    @Min(value = 100000, message = "Pincode must be 6 digits")
+    @Max(value = 999999, message = "Pincode must be 6 digits")
     private Integer pinCode;
     @NotNull(message = "Mobile number cannot be empty")
     private Long mobileNumber;
@@ -42,10 +42,9 @@ public class ProfileDTO {
     @Size(max = 45, message = "Marital status cannot exceed 45 characters")
     private String maritalStatus;
     @NotNull(message = "Height cannot be empty")
-    @Size(max = 45, message = "Height cannot exceed 45 characters")
-    private Double height;
+    @Pattern(regexp = "^[0-9](\\.[0-9]{1,2})?$", message = "Height must be in format like 5.8 or 5.10")
+    private String height;
     @NotNull(message = "Weight cannot be empty")
-    @Size(max = 45, message = "Weight cannot exceed 45 characters")
     private Double weight;
     @NotNull(message = "Blood group cannot be empty")
     @Size(max = 45, message = "Blood group cannot exceed 45 characters")
