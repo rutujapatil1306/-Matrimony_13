@@ -25,13 +25,16 @@ public class UserProfile {
     private Integer pinCode;
     private Long mobileNumber;
     private String mail;
-    private String status1;
+
+    @Enumerated(EnumType.STRING)
+    private Status status=Status.DEACTIVE;
+
     private String gender;
     private String religion;
     private String caste;
     private String maritalStatus;
-    private Integer height;
-    private Integer weight;
+    private Double height;
+    private Double weight;
 
     private String bloodGroup;
     private String complexion;

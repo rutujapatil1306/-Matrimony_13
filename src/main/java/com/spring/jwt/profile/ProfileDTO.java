@@ -31,7 +31,7 @@ public class ProfileDTO {
     private String district;
     @NotNull(message = "Pincode cannot be empty")
     @Size(max = 45, message = "Pincode cannot exceed 45 characters")
-    private String pinCode;
+    private Integer pinCode;
     @NotNull(message = "Mobile number cannot be empty")
     private Long mobileNumber;
     private String userProfileStatus;
@@ -43,10 +43,10 @@ public class ProfileDTO {
     private String maritalStatus;
     @NotNull(message = "Height cannot be empty")
     @Size(max = 45, message = "Height cannot exceed 45 characters")
-    private String height;
+    private Double height;
     @NotNull(message = "Weight cannot be empty")
     @Size(max = 45, message = "Weight cannot exceed 45 characters")
-    private String weight;
+    private Double weight;
     @NotNull(message = "Blood group cannot be empty")
     @Size(max = 45, message = "Blood group cannot exceed 45 characters")
     private String bloodGroup;
