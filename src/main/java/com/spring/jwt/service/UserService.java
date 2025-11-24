@@ -28,11 +28,11 @@ public interface UserService {
 
     Page<UserDTO> getAllUsers(int pageNo, int pageSize);
 
-    UserDTO getUserById(Long id);
+    UserDTO getUserById(Integer id);
     
-    UserProfileDTO getUserProfileById(Long id);
+    UserProfileDTO getUserProfileById(Integer id);
     
     UserProfileDTO getCurrentUserProfile();
 
-    UserDTO updateUser(Long id, UserUpdateRequest request);
+    UserDTO updateUser(Integer id, UserUpdateRequest request);
 }

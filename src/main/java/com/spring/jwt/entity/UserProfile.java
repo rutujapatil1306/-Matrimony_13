@@ -33,7 +33,7 @@ public class UserProfile {
     private String religion;
     private String caste;
     private String maritalStatus;
-    private Double height;
+    private String height;
     private Double weight;
 
     private String bloodGroup;
