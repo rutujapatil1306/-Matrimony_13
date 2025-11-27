@@ -19,13 +19,11 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @PostMapping("/createProfile")
+    @PostMapping("/create")
     public ResponseEntity<BaseResponseDTO> createProfile(
             @RequestBody ProfileDTO profileDTO) {
 
         Integer userId= SecurityUtil.getCurrentUserId();
-
-        System.out.println("🔍 Extracted from JWT token: userId = " + userId);
         BaseResponseDTO response = profileService.createProfile(userId,profileDTO);
 
         return  ResponseEntity
@@ -33,7 +31,7 @@ public class ProfileController {
                 .body(response);
       }
 
-    @PatchMapping("/updateProfile")
+    @PatchMapping("/update")
     public ResponseEntity<ApiResponse<ProfileDTO>> updateByUserID(
             @RequestBody ProfileDTO dto){
 
@@ -45,7 +43,7 @@ public class ProfileController {
                 .body(ApiResponse.success("Profile Updated Successfully !"));
     }
 
-    @GetMapping("/getProfile")
+    @GetMapping("/get")
     public ResponseEntity<ApiResponse<ProfileDTO>> getProfileById(){
 
         Integer userId = SecurityUtil.getCurrentUserId();

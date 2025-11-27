@@ -4,17 +4,10 @@ import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
 import com.spring.jwt.utils.SecurityUtil;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/contact")
@@ -35,26 +28,31 @@ public class ContactController {
     }
 
     @GetMapping("/getByUserId")
-    public ResponseEntity<ApiResponse> getByUserId(@RequestParam Integer userId){
+    public ResponseEntity<ApiResponse> getByUserId(){
 
+        Integer userId = SecurityUtil.getCurrentUserId();
         ApiResponse response = contactService.getByUserId(userId);
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body(ApiResponse.success("Retrived Data By Using User ID",response));
+                .body(ApiResponse.success("Retrieved Data By Using User ID",response));
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<ApiResponse<ContactDetails>> updateByUserID(@RequestParam Integer userId, @RequestBody ContactDTO contactDTO){
+    public ResponseEntity<ApiResponse<ContactDetails>> updateByUserID(@RequestBody ContactDTO contactDTO){
+
+        Integer userId = SecurityUtil.getCurrentUserId();
         ApiResponse response = contactService.updateByUserID(userId,contactDTO);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ApiResponse.success("Contact Updated Sucessfully !"));
+                .body(ApiResponse.success("Contact Updated Successfully !"));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<BaseResponseDTO> deleteByUserID(@RequestParam Integer userID){
-        BaseResponseDTO response = contactService.deleteByUserID(userID);
+    public ResponseEntity<BaseResponseDTO> deleteByUserID(){
+
+        Integer userId = SecurityUtil.getCurrentUserId();
+        BaseResponseDTO response = contactService.deleteByUserID(userId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

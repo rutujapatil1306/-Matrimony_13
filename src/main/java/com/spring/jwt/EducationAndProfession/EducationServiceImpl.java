@@ -68,7 +68,6 @@ public class EducationServiceImpl implements EducationService {
     }
 
 
-
     private void updateEducation(EducationAndProfession existing, EducationDTO educationDTO) {
         if (educationDTO.getEducation() != null) {
             existing.setEducation(educationDTO.getEducation());

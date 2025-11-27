@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/horoscope")
 @RequiredArgsConstructor
 public class HoroscopeDetailsController {
 
@@ -21,7 +21,7 @@ public class HoroscopeDetailsController {
 
 
     @Operation(summary = "Api for profile creation")
-    @PostMapping("/saveHoroscope")
+    @PostMapping("/create")
     public ResponseEntity<BaseResponseDTO> saveHoroscope(
             @RequestBody HoroscopeDTO horoscopeDTO) {
 
@@ -33,7 +33,7 @@ public class HoroscopeDetailsController {
     }
 
     @Operation(summary = "Fetching horoscope details using user id")
-    @GetMapping("/getHoroscope")
+    @GetMapping("/get")
     public ResponseEntity<ApiResponse<HoroscopeDTO>> getHoroscopeByID() {
 
         Integer userId = SecurityUtil.getCurrentUserId();
@@ -43,7 +43,7 @@ public class HoroscopeDetailsController {
                 .body(ApiResponse.success("Horoscope Details For Id " + userId, horoscopeById));
     }
 
-    @PatchMapping("/updateHoroscope")
+    @PatchMapping("/update")
     public ResponseEntity<ApiResponse<HoroscopeDTO>> updateByUserID(
             @RequestBody HoroscopeDTO horoscopeDTO){
 
