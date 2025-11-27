@@ -2,6 +2,10 @@ package com.spring.jwt.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,21 +21,25 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer documentId;
 
-    @Column(length = 45, nullable = false)
-    private String documentName;
+    // Example: "Aadhaar", "PAN", "Resume"
+    @Column(nullable = false, length = 50)
+    private String documentType;
+
+    @Column(nullable = false, length = 150)
+    private String fileName;
 
     @Lob
-    @Column(name = "document_data", nullable = false)
-    private byte[] documentFile;
+    @Column(columnDefinition = "MEDIUMBLOB", nullable = false)
+    private byte[] fileData;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 //    @Column(length = 45)
 //    private String status1;
 //
 //    @OneToOne(mappedBy = "document")
-//    private CompleteProfile status;
+//    private CompleteProfile completeProfile;
 
 }
