@@ -55,8 +55,9 @@ public class HoroscopeDetails {
   //  @Column(length = 45, nullable = false)
     private String devak;
 
-  //  @Column(length = 45)
-    private String status1;
+//    @Column(length = 45)
+//    @Enumerated(EnumType.STRING)
+//    private Status status;
 
     @OneToOne
     @JoinColumn(name = "user_id")

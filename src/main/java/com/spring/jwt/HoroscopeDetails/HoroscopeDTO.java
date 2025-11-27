@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
 
 import java.util.Date;
 
@@ -45,6 +45,6 @@ public class HoroscopeDTO {
     @NotNull(message = "Devak cannot be empty")
     @Size(max = 45, message = "Devak cannot exceed 45 characters")
     private String devak;
-    @Size(max = 45, message = "CompleteProfile cannot exceed 45 characters")
-    private String status;
+//    @Size(max = 45, message = "CompleteProfile cannot exceed 45 characters")
+//    private Status status;
 }

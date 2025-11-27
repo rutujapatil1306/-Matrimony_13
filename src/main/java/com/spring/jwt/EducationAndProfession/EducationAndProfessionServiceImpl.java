@@ -1,8 +1,6 @@
 package com.spring.jwt.EducationAndProfession;
 
-import com.spring.jwt.ContactDetails.ContactDTO;
-import com.spring.jwt.ContactDetails.ContactMapper;
-import com.spring.jwt.entity.ContactDetails;
+
 import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.utils.ApiResponse;

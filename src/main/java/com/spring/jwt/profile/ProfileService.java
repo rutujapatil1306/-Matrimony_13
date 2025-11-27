@@ -1,10 +1,13 @@
 package com.spring.jwt.profile;
 
+import com.spring.jwt.utils.ApiResponse;
+import com.spring.jwt.utils.BaseResponseDTO;
+
 public interface ProfileService {
 
-    ProfileDTO createProfile(Integer userId, ProfileDTO profileDTO);
+    BaseResponseDTO createProfile(Integer userId, ProfileDTO profileDTO);
 
-    ProfileDTO updateProfile(Integer userId, ProfileDTO dto);
+    ApiResponse updateProfile(Integer userId, ProfileDTO dto);
 
     ProfileDTO getProfile(Integer userId);
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DocumentDTO {
-    private String documentType;
-    private byte[] documentData;
+
+    private String documentName;
+    private byte[] documentFile;
 }

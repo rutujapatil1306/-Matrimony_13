@@ -390,6 +390,11 @@ public class JwtServiceImpl implements JwtService {
             return false;
         }
     }
+
+    public Integer extractUserId(String token) {
+        Claims claims = extractClaims(token);
+        return claims.get("userId", Integer.class);
+    }
 }
 
 

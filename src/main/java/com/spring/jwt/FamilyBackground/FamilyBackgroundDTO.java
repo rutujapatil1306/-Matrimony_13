@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FamilyBackgroundDTO {
 
+
     private String fatherOccupation;
     private String motherOccupation;
     private String brothers;

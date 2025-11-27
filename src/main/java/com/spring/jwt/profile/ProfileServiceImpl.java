@@ -4,7 +4,10 @@ package com.spring.jwt.profile;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserProfile;
 import com.spring.jwt.exception.ProfileNotFoundException;
+import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
+import com.spring.jwt.utils.ApiResponse;
+import com.spring.jwt.utils.BaseResponseDTO;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -20,53 +23,29 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional
-    public ProfileDTO createProfile(Integer userId, ProfileDTO dto) {
+    public BaseResponseDTO createProfile(Integer userId, ProfileDTO dto) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
-        UserProfile existing = profileRepository.findByUserId(userId);
-        if (existing != null) {
-            throw new RuntimeException("Profile already exists");
-        }
-        UserProfile entity = new UserProfile();
-
+        UserProfile entity = profileMapper.toEntity(dto);
         entity.setUser(user);
-        entity.setFirstName(dto.getFirstName());
-        entity.setLastName(dto.getLastName());
-        entity.setMiddleName(dto.getMiddleName());
-        entity.setAddress(dto.getAddress());
-        entity.setTaluka(dto.getTaluka());
-        entity.setDistrict(dto.getDistrict());
-        entity.setPinCode(dto.getPinCode());
-        entity.setMobileNumber(dto.getMobileNumber());
-        entity.setGender(dto.getGender());
-        entity.setReligion(dto.getReligion());
-        entity.setCaste(dto.getCaste());
-        entity.setMaritalStatus(dto.getMaritalStatus());
-        entity.setHeight(dto.getHeight());
-        entity.setWeight(dto.getWeight());
-        entity.setBloodGroup(dto.getBloodGroup());
-        entity.setComplexion(dto.getComplexion());
-        entity.setDiet(dto.getDiet());
-        entity.setSpectacle(dto.getSpectacle());
-        entity.setLens(dto.getLens());
-        entity.setPhysicallyChallenged(dto.getPhysicallyChallenged());
-        entity.setHomeTownDistrict(dto.getHomeTownDistrict());
-        entity.setNativeTaluka(dto.getNativeTaluka());
-        entity.setCurrentCity(dto.getCurrentCity());
 
-        UserProfile savedProfile = profileRepository.save(entity);
-        return profileMapper.toDTO(savedProfile);
+        profileRepository.save(entity);
 
+
+        BaseResponseDTO response = new BaseResponseDTO();
+        response.setCode("201");
+        response.setMessage("profile Created successfully");
+        response.setID(entity.getUserProfileId());
+        return response;
     }
 
     @Override
-    public ProfileDTO updateProfile(Integer userId, ProfileDTO dto) {
-        UserProfile profile = profileRepository.findByUserId(userId);
-        if (profile == null) {
-            throw new RuntimeException("Profile not found");
-        }
+    public ApiResponse updateProfile(Integer userId, ProfileDTO dto) {
+        UserProfile profile= profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
+
         if (dto.getFirstName() != null) {
             profile.setFirstName(dto.getFirstName());
         }
@@ -141,24 +120,28 @@ public class ProfileServiceImpl implements ProfileService {
         }
 
         UserProfile savedProfile = profileRepository.save(profile);
-        return profileMapper.toDTO(savedProfile);
+        profileMapper.toDTO(savedProfile);
 
+        ApiResponse response = new ApiResponse();
+        response.setStatusCode(200);
+        response.setMessage("Contact updated successfully");
+
+        return response;
     }
 
 
     @Override
+    @Transactional(readOnly = true)
     public ProfileDTO getProfile(Integer userId) {
-        UserProfile userProfile= profileRepository.findByUserId(userId);
-        if(userProfile==null){
-            throw new ProfileNotFoundException("profile not found");
-        }
-        return profileMapper.toDTO(userProfile);
+        return profileRepository.findByUserId(userId).map(profileMapper::toDTO)
+                .orElseThrow(() -> new ProfileNotFoundException("profile not found"));
+
     }
 
     @Override
     public void deleteProfile(Integer userId) {
-        UserProfile byUserId = profileRepository.findByUserId(userId);
-        profileRepository.delete(byUserId);
+        profileRepository.findByUserId(userId);
+
     }
 
 }

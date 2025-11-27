@@ -33,7 +33,7 @@ import java.security.Security;
 				)
 		)
 )
-public class JwtWithSpringSecurityApplication {
+public class  JwtWithSpringSecurityApplication {
 
 	public static void main(String[] args) {
 		Security.addProvider(new BouncyCastleProvider());
@@ -48,7 +48,7 @@ public class JwtWithSpringSecurityApplication {
 		System.err.println("*       *  *        *******       *****      *     *       *  *     *     *   " );
 
 		System.err.println("PORT : localhost8080");
-		System.err.println("documentation : "+"http://localhost:8080/swagger-ui/index.html#/   ok");
+		System.err.println("documentation : "+" http://localhost:8080/swagger-ui/index.html#/  ok");
 		System.err.println("New Subbranch");
 	}
 }

@@ -1,14 +1,9 @@
 package com.spring.jwt.profile;
 
-import com.spring.jwt.entity.User;
-import com.spring.jwt.exception.ProfileNotFoundException;
-import com.spring.jwt.jwt.JwtService;
-import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
-import io.jsonwebtoken.Claims;
-import io.swagger.v3.oas.annotations.Operation;
+import com.spring.jwt.utils.BaseResponseDTO;
+import com.spring.jwt.utils.SecurityUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,62 +11,50 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/profile")
 @RequiredArgsConstructor
 @Validated
 @Tag(name = "Profile Api", description = "Api for profile management")
 public class ProfileController {
 
     private final ProfileService profileService;
-    private final JwtService jwtService;
-    private final UserRepository userRepository;
 
-    private Integer extractUserId(String authHeader) {
-        String token = authHeader.substring(7);
+    @PostMapping("/createProfile")
+    public ResponseEntity<BaseResponseDTO> createProfile(
+            @RequestBody ProfileDTO profileDTO) {
 
-        // 1. Validate token
-        if (!jwtService.isValidToken(token)) {
-            throw new RuntimeException("Invalid token");
-        }
-        // 2. Extract claims
-        Claims claims = jwtService.extractClaims(token);
-        // 3. Extract email (subject)
-        String email = claims.getSubject();
-        // 4. Fetch userId
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
-        return user.getId();
-    }
+        Integer userId= SecurityUtil.getCurrentUserId();
 
-    @Operation(summary = "Api for profile creation")
-    @PostMapping ("/createProfile")
-    public ResponseEntity<ApiResponse<ProfileDTO>> createProfile(
-            @RequestHeader("Authorization") String authHeader,
-            @RequestBody @Valid ProfileDTO profileDTO){
-        try {
-            Integer userId= extractUserId(authHeader);
-            profileService.createProfile(userId, profileDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("profile created successfully"));
-        }catch (Exception e){
-            return ResponseEntity.badRequest()
-                    .body(ApiResponse.error(HttpStatus.BAD_REQUEST,"profile creation failed",e.getMessage()));
-        }
+        System.out.println("🔍 Extracted from JWT token: userId = " + userId);
+        BaseResponseDTO response = profileService.createProfile(userId,profileDTO);
 
+        return  ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+      }
+
+    @PatchMapping("/updateProfile")
+    public ResponseEntity<ApiResponse<ProfileDTO>> updateByUserID(
+            @RequestBody ProfileDTO dto){
+
+        Integer userId = SecurityUtil.getCurrentUserId();
+        profileService.updateProfile(userId, dto);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success("Profile Updated Successfully !"));
     }
 
     @GetMapping("/getProfile")
-    public ResponseEntity<ApiResponse<ProfileDTO>>getProfile(
-            @PathVariable Integer userId) {
-        try {
-            ProfileDTO profile = profileService.getProfile(userId);
-            return ResponseEntity.ok().body(ApiResponse.success("profile fetched successfully"));
-        } catch (ProfileNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error(HttpStatus.NOT_FOUND, "Profile not found", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ApiResponse.error(HttpStatus.BAD_REQUEST, "Request failed", e.getMessage()));
-        }
+    public ResponseEntity<ApiResponse<ProfileDTO>> getProfileById(){
+
+        Integer userId = SecurityUtil.getCurrentUserId();
+        ProfileDTO response= profileService.getProfile(userId);
+
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(ApiResponse.success("Profile details for user id :"+ userId, response));
     }
+
 }
+

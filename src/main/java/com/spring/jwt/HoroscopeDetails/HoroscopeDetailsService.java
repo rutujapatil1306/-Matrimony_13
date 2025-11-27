@@ -4,10 +4,11 @@ package com.spring.jwt.HoroscopeDetails;
 import com.spring.jwt.dto.UserProfileDTO;
 import com.spring.jwt.entity.HoroscopeDetails;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.utils.BaseResponseDTO;
 
 public interface HoroscopeDetailsService {
 
-    HoroscopeDTO saveHoroscopeDetails(HoroscopeDTO horoscopeDTO);
+    BaseResponseDTO saveHoroscopeDetails(Integer userId, HoroscopeDTO horoscopeDTO);
 
     HoroscopeDTO getHoroscopeById(Integer id);
 

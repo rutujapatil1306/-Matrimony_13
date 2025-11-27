@@ -4,6 +4,7 @@ package com.spring.jwt.config.filter;
 import com.spring.jwt.jwt.JwtConfig;
 import com.spring.jwt.jwt.JwtService;
 import com.spring.jwt.jwt.ActiveSessionService;
+import com.spring.jwt.service.security.UserDetailsCustom;
 import com.spring.jwt.service.security.UserDetailsServiceCustom;
 import com.spring.jwt.utils.BaseResponseDTO;
 import com.spring.jwt.utils.HelperUtils;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -51,6 +53,47 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        String authHeader = request.getHeader("Authorization");
+
+        // 1. No token → just continue
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+         String token = getJwtFromRequest(request);
+
+        // 2. Validate token
+        if (!jwtService.isValidToken(token)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
+        // 3. Extract username + userId from token
+        //String username = jwtService.extractUsername(token);
+        Claims claims = jwtService.extractClaims(token);
+        Integer userId = claims.get("userId", Integer.class);
+        String username= claims.getSubject();
+
+        // 4. Load user details (for roles, etc.)
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        // 5. Create Authentication and store userId in details
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+
+        // 👉 Store userId here so we can read it later
+        authentication.setDetails(userId);
+
+        // 6. Put into SecurityContext
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        filterChain.doFilter(request, response);
         String path = request.getRequestURI();
         log.debug("JWT Filter processing request for path: {}", path);
 
@@ -70,14 +113,14 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         
-        String token = getJwtFromRequest(request);
-        
+         //String token = getJwtFromRequest(request);
+
         if (token == null) {
             log.warn("No JWT token found for protected path: {}", path);
             handleAccessDenied(response);
             return;
         }
-        
+
         try {
             if (!processToken(request, token)) {
                 log.warn("Invalid token for path: {}", path);
@@ -175,6 +218,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                             null,
                             authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
                     );
+
 
                     SecurityContextHolder.getContext().setAuthentication(auth);
                     // If token is not the current session, fail fast with specific message

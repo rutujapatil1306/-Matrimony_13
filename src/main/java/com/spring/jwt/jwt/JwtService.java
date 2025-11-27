@@ -50,4 +50,8 @@ public interface JwtService {
      * @return true if the token is blacklisted
      */
     boolean isBlacklisted(String token);
+
+    Integer extractUserId(String token);
+
+    //String extractUsername(String token);
 }

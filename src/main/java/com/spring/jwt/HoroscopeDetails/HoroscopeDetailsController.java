@@ -1,10 +1,15 @@
 package com.spring.jwt.HoroscopeDetails;
 
 
-import com.spring.jwt.exception.HoroscopeNotFoundException;
+
+import com.spring.jwt.ContactDetails.ContactDTO;
+import com.spring.jwt.entity.ContactDetails;
+import com.spring.jwt.entity.HoroscopeDetails;
 import com.spring.jwt.utils.ApiResponse;
+import com.spring.jwt.utils.BaseResponseDTO;
+import com.spring.jwt.utils.JwtUtils;
+import com.spring.jwt.utils.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,54 +23,38 @@ public class HoroscopeDetailsController {
 
     private final HoroscopeDetailsService horoscopeDetailsService;
 
+
     @Operation(summary = "Api for profile creation")
-    @PatchMapping("/saveHoroscope")
-    public ResponseEntity<ApiResponse<HoroscopeDTO>> saveHoroscope(
+    @PostMapping("/saveHoroscope")
+    public ResponseEntity<BaseResponseDTO> saveHoroscope(
             @RequestBody HoroscopeDTO horoscopeDTO) {
-        try {
-            horoscopeDetailsService.saveHoroscopeDetails(horoscopeDTO);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(ApiResponse.success("Horoscope details saved successfully"));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(ApiResponse.error(HttpStatus.BAD_REQUEST, "saving horoscope details failed", e.getMessage()));
-        }
+
+        Integer userId = SecurityUtil.getCurrentUserId();
+        BaseResponseDTO response= horoscopeDetailsService.saveHoroscopeDetails(userId, horoscopeDTO);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
-    @Operation(summary = "Api for fetching horoscope through its unique identifier")
+    @Operation(summary = "Fetching horoscope details using user id")
     @GetMapping("/getHoroscope")
-    public ResponseEntity<ApiResponse<HoroscopeDTO>> getHoroscope(
-            @PathVariable @Parameter Integer id) {
-        try {
-            HoroscopeDTO horoscope = horoscopeDetailsService.getHoroscopeById(id);
-            return ResponseEntity.ok()
-                    .body(ApiResponse.success("Horoscope fetched successfully", horoscope));
-        }catch (HoroscopeNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error(HttpStatus.NOT_FOUND,"Horoscope not found", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(ApiResponse.error(HttpStatus.BAD_REQUEST, "fetching horoscope failed", e.getMessage()));
-        }
+    public ResponseEntity<ApiResponse<HoroscopeDTO>> getHoroscopeByID() {
+
+        Integer userId = SecurityUtil.getCurrentUserId();
+        HoroscopeDTO horoscopeById = horoscopeDetailsService.getHoroscopeById(userId);
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(ApiResponse.success("Horoscope Details For Id " + userId, horoscopeById));
     }
 
-    @Operation(summary = "Api for updating horoscope through its unique identifier")
     @PatchMapping("/updateHoroscope")
-    public ResponseEntity<ApiResponse<HoroscopeDTO>> updateHoroscope(
-            @PathVariable @Parameter Integer id,
-            @RequestBody HoroscopeDTO horoscopeDTO) {
-        try {
-            HoroscopeDTO horoscopeDTO1 = horoscopeDetailsService.updateHoroscope(id, horoscopeDTO);
-            return ResponseEntity.ok()
-                    .body(ApiResponse.success("Horoscope details updated successfully"));
-        }catch(HoroscopeNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.error(HttpStatus.NOT_FOUND,"Horoscope not found", e.getMessage()));
-        }catch (Exception e){
-            return ResponseEntity.badRequest()
-                    .body(ApiResponse.error(HttpStatus.BAD_REQUEST,"horoscope update failed", e.getMessage()));
-        }
+    public ResponseEntity<ApiResponse<HoroscopeDTO>> updateByUserID(
+            @RequestBody HoroscopeDTO horoscopeDTO){
 
+        Integer userId = SecurityUtil.getCurrentUserId();
+        horoscopeDetailsService.updateHoroscope(userId, horoscopeDTO);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success("Horoscope Updated Successfully !"));
     }
-
 }

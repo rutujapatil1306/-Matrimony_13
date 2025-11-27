@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface ProfileRepository extends JpaRepository<UserProfile, Integer> {
 
     @Query("SELECT p FROM UserProfile p WHERE p.user.id = :userId")
-    UserProfile findByUserId(@Param("userId") Integer userId);
+    Optional<UserProfile> findByUserId(@Param("userId") Integer userId);
 
 }

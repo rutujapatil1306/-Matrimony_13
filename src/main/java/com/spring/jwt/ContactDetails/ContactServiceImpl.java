@@ -52,12 +52,9 @@ public class ContactServiceImpl implements ContactService {
         ContactDetails saveContact = ContactMapper.toEntity(contactDTO);
         contactRepository.save(saveContact);
 
-
-
         CompleteProfile completeProfile = new CompleteProfile();
         completeProfile.setContactDetails(saveContact);
         completeProfileRepository.save(completeProfile);
-
 
         BaseResponseDTO response = new BaseResponseDTO();
         response.setCode("200");

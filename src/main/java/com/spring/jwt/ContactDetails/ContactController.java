@@ -1,13 +1,12 @@
 package com.spring.jwt.ContactDetails;
 
 import com.spring.jwt.entity.ContactDetails;
-import com.spring.jwt.utils.ApiResponse;
-import com.spring.jwt.utils.BaseResponseDTO;
-import com.spring.jwt.utils.ErrorResponseDto;
+import com.spring.jwt.utils.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.query.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +16,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/contact")
+@RequiredArgsConstructor
 public class ContactController {
 
     private final ContactService contactService;
 
-    public ContactController(ContactService contactService){
-        this.contactService = contactService;
-    }
-
-
     @PostMapping("/create")
-    public ResponseEntity<BaseResponseDTO> createContact(@RequestBody ContactDTO contactDTO) {
+    public ResponseEntity<BaseResponseDTO> createContact(
+            @RequestBody ContactDTO contactDTO) {
 
+        Integer userId= SecurityUtil.getCurrentUserId();
         BaseResponseDTO response = contactService.create(contactDTO);
 
         return ResponseEntity
@@ -38,6 +35,7 @@ public class ContactController {
 
     @GetMapping("/getById")
     public ResponseEntity<ApiResponse<ContactDetails>> getContactByID(@RequestParam Integer contactID) {
+
         ContactDetails contact = contactService.getContactById(contactID);
 
         return ResponseEntity
