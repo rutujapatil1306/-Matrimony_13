@@ -3,7 +3,6 @@ package com.spring.jwt.FamilyBackground;
 import com.spring.jwt.HoroscopeDetails.HoroscopeDTO;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
-import com.spring.jwt.utils.JwtUtils;
 import com.spring.jwt.utils.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -12,16 +11,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/familyBackground")
 @RequiredArgsConstructor
 public class FamilyBackgroundController {
 
-    private final JwtUtils jwtUtils;
+
     private final FamilyBackgroundService service;
 
 
     @Operation(summary = "Api for FamilyBackground creation")
-    @PostMapping("/saveFamilyBackground")
+    @PostMapping("/create")
     public ResponseEntity<BaseResponseDTO> saveFamilyBackground(
             @RequestBody FamilyBackgroundDTO dto) {
 
@@ -35,7 +34,7 @@ public class FamilyBackgroundController {
 
 
     @Operation(summary = "Fetching FamilyBackground details using user id")
-    @GetMapping("/getBackground")
+    @GetMapping("/get")
     public ResponseEntity<ApiResponse<FamilyBackgroundDTO>> getFamilyBackgroundById() {
 
         Integer userId = SecurityUtil.getCurrentUserId();
@@ -45,7 +44,7 @@ public class FamilyBackgroundController {
                 .body(ApiResponse.success("FamilyBackground Details For Id " + userId, background));
     }
 
-    @PatchMapping("/updateBackground")
+    @PatchMapping("/update")
     public ResponseEntity<ApiResponse<HoroscopeDTO>> updateByUserID(
             @RequestBody FamilyBackgroundDTO dto){
 

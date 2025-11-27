@@ -4,5 +4,5 @@ import com.spring.jwt.utils.BaseResponseDTO;
 
 public interface PartnerPreferenceService {
 
-    BaseResponseDTO create(PartnerPreferenceDTO partnerPreferenceDTO);
+    BaseResponseDTO create(Integer userId, PartnerPreferenceDTO partnerPreferenceDTO);
 }

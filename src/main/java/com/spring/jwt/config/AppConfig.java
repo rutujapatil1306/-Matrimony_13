@@ -198,7 +198,7 @@ public class AppConfig {
                     new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/contact/**"),
                     new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/education/**"),
                     new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/PartnerPreference"),
-                    new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/profile"),
+                    new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/"),
                     new org.springframework.security.web.util.matcher.AntPathRequestMatcher(jwtConfig.getUrl()),
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher(jwtConfig.getRefreshUrl())
             );

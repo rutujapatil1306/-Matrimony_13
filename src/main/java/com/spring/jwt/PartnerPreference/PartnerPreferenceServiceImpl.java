@@ -4,19 +4,18 @@ import com.spring.jwt.ContactDetails.ContactMapper;
 import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.entity.PartnerPreference;
 import com.spring.jwt.utils.BaseResponseDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PartnerPreferenceServiceImpl implements PartnerPreferenceService{
 
    private final PartnerPreferenceRepository partnerPreferenceRepository;
 
-    public PartnerPreferenceServiceImpl(PartnerPreferenceRepository partnerPreferenceRepository) {
-        this.partnerPreferenceRepository = partnerPreferenceRepository;
-    }
 
     @Override
-    public BaseResponseDTO create(PartnerPreferenceDTO partnerPreferenceDTO) {
+    public BaseResponseDTO create(Integer userId, PartnerPreferenceDTO partnerPreferenceDTO) {
 
         PartnerPreference saveContact = PartnerPreferenceMapper.toEntity(partnerPreferenceDTO);
         partnerPreferenceRepository.save(saveContact);
