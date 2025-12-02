@@ -20,9 +20,9 @@ public class DocumentController {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<BaseResponseDTO> uploadDocuments( @RequestHeader("Authorization") String authHeader,
-                                                            @RequestParam String documentName,
-                                                            @RequestPart List<MultipartFile> file)
+    public ResponseEntity<BaseResponseDTO> uploadDocuments(
+            @RequestParam String documentName,
+            @RequestPart List<MultipartFile> file)
     {
         Integer userId= SecurityUtil.getCurrentUserId();
         BaseResponseDTO response = documentService.uploadDocument(userId ,documentName, file);

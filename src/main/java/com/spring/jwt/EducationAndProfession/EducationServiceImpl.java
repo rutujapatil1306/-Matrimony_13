@@ -30,10 +30,7 @@ public class EducationServiceImpl implements EducationService {
         save.setUser(user);
         educationRepository.save(save);
 
-//        CompleteProfile completeProfile =  completeProfileRepository.findByUserId(userId)
-//                .orElseThrow(() -> new UserNotFoundExceptions("USer Not Found with ID " + userId));
-
-        CompleteProfile completeProfile1 = new CompleteProfile();
+        CompleteProfile completeProfile1 =  completeProfileRepository.findByUserId(userId);
         completeProfile1.setEducationAndProfession(save);
         completeProfileRepository.save(completeProfile1);
 

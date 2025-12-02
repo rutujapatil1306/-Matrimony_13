@@ -3,7 +3,6 @@ package com.spring.jwt.utils;
 import com.spring.jwt.service.security.UserDetailsCustom;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
 public final class SecurityUtil {
 

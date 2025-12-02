@@ -17,8 +17,8 @@ public class ContactController {
     private final ContactService contactService;
 
     @PostMapping("/create")
-    public ResponseEntity<BaseResponseDTO> createContact(@RequestHeader("Authorization") String authHeader,
-                                                         @RequestBody ContactDTO contactDTO) {
+    public ResponseEntity<BaseResponseDTO> createContact(
+            @RequestBody ContactDTO contactDTO) {
 
         Integer userId = SecurityUtil.getCurrentUserId();
         BaseResponseDTO response = contactService.create(userId,contactDTO);
@@ -27,7 +27,7 @@ public class ContactController {
                 .body(response);
     }
 
-    @GetMapping("/getByUserId")
+    @GetMapping("/get")
     public ResponseEntity<ApiResponse> getByUserId(){
 
         Integer userId = SecurityUtil.getCurrentUserId();

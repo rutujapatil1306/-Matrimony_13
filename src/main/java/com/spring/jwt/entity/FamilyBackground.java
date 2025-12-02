@@ -20,6 +20,12 @@ public class FamilyBackground {
     private Integer familyBackgroundId;
 
     @Column(length = 45)
+    private String fathersName;
+
+    @Column(length = 45)
+    private String mothersName;
+
+    @Column(length = 45)
     private String fatherOccupation;
 
     @Column(length = 45)
@@ -59,7 +65,7 @@ public class FamilyBackground {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @OneToOne(mappedBy = "familyBackground")
-//    private CompleteProfile status;
+    @OneToOne(mappedBy = "familyBackground")
+    private CompleteProfile status;
 
 }

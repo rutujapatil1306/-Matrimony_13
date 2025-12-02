@@ -17,7 +17,6 @@ import lombok.Setter;
 public class Document {
 
     @Id
-    @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer documentId;
 
@@ -39,7 +38,7 @@ public class Document {
 //    @Column(length = 45)
 //    private String status1;
 //
-//    @OneToOne(mappedBy = "document")
-//    private CompleteProfile completeProfile;
+    @OneToOne(mappedBy = "document")
+    private CompleteProfile completeProfile;
 
 }

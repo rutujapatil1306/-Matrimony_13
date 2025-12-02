@@ -23,13 +23,11 @@ public class ContactServiceImpl implements ContactService {
 
 
     private final ContactRepository contactRepository;
-
     private final CompleteProfileRepository completeProfileRepository;
-
     private final UserRepository userRepository;
 
     @Override
-    public BaseResponseDTO create(Integer userId,ContactDTO contactDTO) {
+    public BaseResponseDTO create(Integer userId, ContactDTO contactDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
@@ -42,7 +40,7 @@ public class ContactServiceImpl implements ContactService {
         saveContact.setUser(user);
         contactRepository.save(saveContact);
 
-        CompleteProfile completeProfile = new CompleteProfile();
+        CompleteProfile completeProfile = completeProfileRepository.findByUserId(userId);
         completeProfile.setContactDetails(saveContact);
         completeProfileRepository.save(completeProfile);
 

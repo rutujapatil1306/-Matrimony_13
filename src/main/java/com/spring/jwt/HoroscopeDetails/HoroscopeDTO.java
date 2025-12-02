@@ -1,5 +1,6 @@
 package com.spring.jwt.HoroscopeDetails;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -14,36 +15,27 @@ import java.util.Date;
 @AllArgsConstructor
 public class HoroscopeDTO {
 
-    @NotNull(message = "Date of birth cannot be empty")
+    @NotBlank(message = "Date of birth required")
     private Date dob;
-    @NotNull(message = "Birth time cannot be empty")
-    @Size(max = 45, message = "Birth time cannot exceed 45 characters")
+    @NotBlank(message = "Birth time required")
     private String time;
-    @Size(max = 45, message = "Birth place cannot exceed 45 characters")
+    @NotBlank(message = "birthplace required")
     private String birthPlace;
-    @NotNull(message = "Rashi cannot be empty")
-    @Size(max = 45, message = "Rashi cannot exceed 45 characters")
+    @NotBlank(message = "Rashi required")
     private String rashi;
-    @NotNull(message = "Nakshatra cannot be empty")
-    @Size(max = 45, message = "Nakshatra cannot exceed 45 characters")
+    @NotBlank(message = "Nakshatra required")
     private String nakshatra;
-    @NotNull(message = "Charan cannot be empty")
-    @Size(max = 45, message = "Charan cannot exceed 45 characters")
+    @NotBlank(message = "Charan required")
     private String charan;
-    @NotNull(message = "Nadi cannot be empty")
-    @Size(max = 45, message = "Nadi cannot exceed 45 characters")
+    @NotBlank(message = "Nadi required")
     private String nadi;
-    @NotNull(message = "Gan cannot be empty")
-    @Size(max = 45, message = "Gan cannot exceed 45 characters")
+    @NotBlank(message = "Gan required")
     private String gan;
-    @NotNull(message = "Mangal cannot be null")
-    @Size(max = 45, message = "Mangal cannot exceed 45 characters")
+    @NotBlank(message = "Mangal required")
     private String mangal;
-    @NotNull(message = "Gotra cannot be empty")
-    @Size(max = 45, message = "Gotra cannot exceed 45 characters")
+    @NotBlank(message = "Gotra required")
     private String gotra;
-    @NotNull(message = "Devak cannot be empty")
-    @Size(max = 45, message = "Devak cannot exceed 45 characters")
+    @NotBlank(message = "Devak required")
     private String devak;
 //    @Size(max = 45, message = "CompleteProfile cannot exceed 45 characters")
 //    private Status status;

@@ -1,6 +1,8 @@
 package com.spring.jwt.HoroscopeDetails;
 
 
+import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
+import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.HoroscopeDetails;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.HoroscopeNotFoundException;
@@ -18,7 +20,7 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService{
     private final HoroscopeDetailsRepository horoscopeDetailsRepository;
     private final UserRepository userRepository;
     private final HoroscopeMapper horoscopeMapper;
-
+    private final CompleteProfileRepository repository;
 
     @Override
     public BaseResponseDTO saveHoroscopeDetails(Integer userId, HoroscopeDTO dto) {
@@ -30,6 +32,10 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService{
         entity.setUser(user);
 
         horoscopeDetailsRepository.save(entity);
+
+        CompleteProfile completeProfile = repository.findByUserId(userId);
+        completeProfile.setHoroscopeDetails(entity);
+        repository.save(completeProfile);
 
         BaseResponseDTO response = new BaseResponseDTO();
         response.setCode("201");

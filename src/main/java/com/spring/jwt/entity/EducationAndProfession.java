@@ -26,19 +26,19 @@ public class EducationAndProfession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer educationId;
 
-   // @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String education;
 
-   // @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String degree;
 
-  //  @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String occupation;
 
-   // @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String occupationDetails;
 
-   // @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private Integer incomePerYear;
 
   //  @Column(length = 45)
@@ -51,7 +51,7 @@ public class EducationAndProfession {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @OneToOne(mappedBy = "educationAndProfession")
-//    private CompleteProfile CompleteProfile;
+    @OneToOne(mappedBy = "educationAndProfession")
+    private CompleteProfile CompleteProfile;
 
 }

@@ -22,48 +22,48 @@ public class HoroscopeDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer horoscopeDetailsId;
 
-   // @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private Date dob;
 
-    //@Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String time;
 
-  //  @Column(length = 45)
+    @Column(length = 45)
     private String birthPlace;
 
- //   @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String rashi;
 
-  //  @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String nakshatra;
 
-  //  @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String charan;
 
-  //  @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String nadi;
 
-   // @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String gan;
 
-  //  @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String mangal;
 
-   // @Column(length = 45,nullable = false)
+    @Column(length = 45,nullable = false)
     private String gotra;
 
-  //  @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false)
     private String devak;
 
-//    @Column(length = 45)
-//    @Enumerated(EnumType.STRING)
-//    private Status status;
+    @Column(length = 45)
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @OneToOne(mappedBy = "horoscopeDetails")
-//    private CompleteProfile status;
+    @OneToOne(mappedBy = "horoscopeDetails")
+    private CompleteProfile completeProfile;
 
 }

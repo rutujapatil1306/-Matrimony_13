@@ -99,14 +99,14 @@ public class DocumentServiceImpl implements DocumentService{
 
             Document savedDoc = documentRepository.save(document);
             savedDocumentIds.add(savedDoc.getDocumentId());
+
+            CompleteProfile completeProfile = completeProfileRepository.findByUserId(userId);
+            completeProfile.setDocument(document);
+
+            //completeProfile.setUser(user);
+            completeProfileRepository.save(completeProfile);
+
         }
-
-        // -------- 6. Update CompleteProfile --------
-        CompleteProfile completeProfile = completeProfileRepository.findByUserId(userId)
-                .orElse(new CompleteProfile());
-
-        completeProfile.setUser(user);
-
 //        // add all uploaded document IDs
 //        if (completeProfile.getDocuments() == null) {
 //            completeProfile.setDocuments(new ArrayList<>());
@@ -115,16 +115,14 @@ public class DocumentServiceImpl implements DocumentService{
 //        List<Document> allDocuments = documentRepository.findAllById(savedDocumentIds);
 //        completeProfile.getDocuments().addAll(allDocuments);
 
-        completeProfileRepository.save(completeProfile);
+            // -------- 7. Prepare Response --------
+            BaseResponseDTO response = new BaseResponseDTO();
+            response.setCode("200");
+            response.setMessage("Documents uploaded successfully");
+            // response.setID(); // Return list of document IDs
 
-        // -------- 7. Prepare Response --------
-        BaseResponseDTO response = new BaseResponseDTO();
-        response.setCode("200");
-        response.setMessage("Documents uploaded successfully");
-        // response.setID(); // Return list of document IDs
-
-        return response;
-    }
+            return response;
+        }
 
 
     private byte[] compressPDF(MultipartFile file) throws IOException {

@@ -114,9 +114,6 @@ public class AppConfig {
                 "/api/**",
                 "/user/**",
                 "/api/users/**",
-                "/api/contact/**",
-                "/api/education",
-                "/api/PartnerPreference",
 
                 jwtConfig.getUrl(),
                 jwtConfig.getRefreshUrl()
@@ -147,10 +144,12 @@ public class AppConfig {
                 .requestMatchers("/api/v1/exam/**").permitAll()
                 .requestMatchers("/api/v1/**").permitAll()
                 .requestMatchers("/api/users/**").permitAll()
-                .requestMatchers("/api/contact/**").permitAll()
-                .requestMatchers("/api/education/**").permitAll()
-                .requestMatchers("/api/PartnerPreference").permitAll()
-                //.requestMatchers("/api/profile").permitAll()
+//                .requestMatchers("/api/education/**").permitAll()
+//                .requestMatchers("/api/contact/**").permitAll()
+//                .requestMatchers("/api/partnerPreference/**").permitAll()
+//                .requestMatchers("/api/familyBackground/**").permitAll()
+//                .requestMatchers("/api/horoscope/**").permitAll()
+
                 .requestMatchers(jwtConfig.getUrl()).permitAll()
                 .requestMatchers(jwtConfig.getRefreshUrl()).permitAll()
 
@@ -165,16 +164,11 @@ public class AppConfig {
                         "/swagger-ui/**",
                         "/webjars/**",
                         "/swagger-ui.html",
-                        "/api/users/**",
-                        "/api/contact/**",
-                        "/api/education/**",
-                        "/api/PartnerPreference"
-                       // "/api/profile"
+                        "/api/users/**"
                 ).permitAll()
 
                 .requestMatchers("/api/public/**").permitAll()
                 .requestMatchers("/user/**").permitAll()
-
 
                 .anyRequest().authenticated());
 
@@ -195,10 +189,6 @@ public class AppConfig {
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/swagger-ui.html"),
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/user/**"),
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/users/**"),
-                    new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/contact/**"),
-                    new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/education/**"),
-                    new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/PartnerPreference"),
-                    //new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/"),
                     new org.springframework.security.web.util.matcher.AntPathRequestMatcher(jwtConfig.getUrl()),
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher(jwtConfig.getRefreshUrl())
             );

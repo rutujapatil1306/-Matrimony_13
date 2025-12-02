@@ -137,7 +137,11 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
 
         user = userRepository.save(user);
-//
+
+        CompleteProfile completeProfile = new CompleteProfile();
+        completeProfile.setUser(user);
+        completeProfileRepository.save(completeProfile);
+
 //        if (role != null) {
 //            switch (role.getName()) {
 //                case "USER":

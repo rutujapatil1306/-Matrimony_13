@@ -1,6 +1,8 @@
 package com.spring.jwt.profile;
 
 
+import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
+import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserProfile;
 import com.spring.jwt.exception.ProfileNotFoundException;
@@ -13,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
@@ -20,6 +24,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
     private final UserRepository userRepository;
+    private final CompleteProfileRepository repository;
 
     @Override
     @Transactional
@@ -30,9 +35,11 @@ public class ProfileServiceImpl implements ProfileService {
 
         UserProfile entity = profileMapper.toEntity(dto);
         entity.setUser(user);
-
         profileRepository.save(entity);
 
+        CompleteProfile completeProfile = repository.findByUserId(userId);
+        completeProfile.setUserProfile(entity);
+        repository.save(completeProfile);
 
         BaseResponseDTO response = new BaseResponseDTO();
         response.setCode("201");

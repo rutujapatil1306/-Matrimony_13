@@ -58,7 +58,7 @@ public class PartnerPreference {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @OneToOne(mappedBy = "partnerPreference")
-//    private CompleteProfile status;
+    @OneToOne(mappedBy = "partnerPreference")
+    private CompleteProfile status;
 
 }

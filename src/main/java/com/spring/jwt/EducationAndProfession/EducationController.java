@@ -22,13 +22,14 @@ public class EducationController {
 
         Integer userId= SecurityUtil.getCurrentUserId();
         BaseResponseDTO response = educationAndProfessionService.create(userId , educationDTO);
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<ApiResponse<EducationAndProfession>> updateByUserdID(
+    public ResponseEntity<ApiResponse<EducationAndProfession>> updateByUserIdID(
             @RequestBody EducationDTO educationDTO){
 
         Integer userId = SecurityUtil.getCurrentUserId();

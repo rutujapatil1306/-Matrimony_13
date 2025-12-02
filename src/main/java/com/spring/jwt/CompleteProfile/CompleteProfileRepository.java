@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface CompleteProfileRepository extends JpaRepository<CompleteProfile, Integer> {
 
-    Optional<CompleteProfile> findByUserId(Integer userId);
+    CompleteProfile findByUserId(Integer userId);
 }
