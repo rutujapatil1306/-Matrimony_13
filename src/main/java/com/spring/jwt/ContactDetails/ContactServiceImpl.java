@@ -31,10 +31,9 @@ public class ContactServiceImpl implements ContactService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
-//        Optional<ContactDetails> existing = contactRepository.findByUserId(userId);
-//        if (existing != null) {
-//            throw new UserAlreadyExistException("Contact already exists");
-//        }
+        if (contactRepository.existsByMobileNumber(contactDTO.getMobileNumber())) {
+            throw new UserAlreadyExistException("Mobile number already exists");
+        }
 
         ContactDetails saveContact = ContactMapper.toEntity(contactDTO);
         saveContact.setUser(user);
