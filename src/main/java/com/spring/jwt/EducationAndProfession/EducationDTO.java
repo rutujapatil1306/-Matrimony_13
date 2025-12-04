@@ -25,7 +25,7 @@ public class EducationDTO {
     @NotBlank(message = "Occupation details required")
     private String occupationDetails;
 
-    @NotBlank(message = "Income per year required")
+    @NotNull(message = "Income per year required")
     @Positive(message = "Income per year must be a positive number")
     private Integer incomePerYear;
 
@@ -33,5 +33,4 @@ public class EducationDTO {
 
     private String educationAndProfessionalDetailsCol;
 
-    private Integer userId;
 }

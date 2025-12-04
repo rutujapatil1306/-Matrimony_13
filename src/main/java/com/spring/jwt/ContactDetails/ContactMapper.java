@@ -2,7 +2,9 @@ package com.spring.jwt.ContactDetails;
 
 import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.entity.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ContactMapper {
 
     public static ContactDetails toEntity(ContactDTO dto) {
@@ -26,18 +28,11 @@ public class ContactMapper {
             contact.setAlternateNumber(dto.getAlternateNumber());
         }
 
-        // For One-to-One User ID
-        if (dto.getUserId() != null) {
-            User user = new User();
-            user.setId(dto.getUserId());
-            contact.setUser(user);
-        }
-
         return contact;
     }
 
     // ------------------------ TO DTO -----------------------------
-    public static ContactDTO toDto(ContactDetails contact) {
+    public static ContactDTO toDTO(ContactDetails contact) {
         if (contact == null) return null;
 
         ContactDTO dto = new ContactDTO();
@@ -57,11 +52,6 @@ public class ContactMapper {
         }
         if (contact.getAlternateNumber() != null) {
             dto.setAlternateNumber(contact.getAlternateNumber());
-        }
-
-        // Only send UserID in DTO
-        if (contact.getUser() != null && contact.getUser().getId() != null) {
-            dto.setUserId(contact.getUser().getId());
         }
 
         return dto;

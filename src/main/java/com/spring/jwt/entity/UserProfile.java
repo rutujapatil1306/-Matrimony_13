@@ -23,7 +23,7 @@ public class UserProfile {
     private String taluka;
     private String district;
     private Integer pinCode;
-    private Long mobileNumber;
+    private String mobileNumber;
     private String mail;
 
     @Enumerated(EnumType.STRING)

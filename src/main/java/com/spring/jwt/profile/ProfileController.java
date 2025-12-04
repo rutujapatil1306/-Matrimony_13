@@ -4,6 +4,7 @@ import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
 import com.spring.jwt.utils.SecurityUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class ProfileController {
 
     @PostMapping("/create")
     public ResponseEntity<BaseResponseDTO> createProfile(
-            @RequestBody ProfileDTO profileDTO) {
+            @RequestBody @Valid ProfileDTO profileDTO) {
 
         Integer userId= SecurityUtil.getCurrentUserId();
         BaseResponseDTO response = profileService.createProfile(userId,profileDTO);

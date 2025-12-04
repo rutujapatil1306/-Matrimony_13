@@ -4,6 +4,7 @@ import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
 import com.spring.jwt.utils.SecurityUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class EducationController {
 
     @PostMapping("/create")
     public ResponseEntity<BaseResponseDTO> create(
-            @RequestBody EducationDTO educationDTO) {
+            @RequestBody @Valid EducationDTO educationDTO) {
 
         Integer userId= SecurityUtil.getCurrentUserId();
         BaseResponseDTO response = educationAndProfessionService.create(userId , educationDTO);

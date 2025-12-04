@@ -4,6 +4,7 @@ import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
 import com.spring.jwt.utils.SecurityUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class ContactController {
 
     @PostMapping("/create")
     public ResponseEntity<BaseResponseDTO> createContact(
-            @RequestBody ContactDTO contactDTO) {
+            @RequestBody @Valid ContactDTO contactDTO) {
 
         Integer userId = SecurityUtil.getCurrentUserId();
         BaseResponseDTO response = contactService.create(userId,contactDTO);

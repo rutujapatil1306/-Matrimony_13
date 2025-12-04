@@ -1,6 +1,7 @@
 package com.spring.jwt.PartnerPreference;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,14 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PartnerPreferenceDTO {
 
-    @NotBlank(message = "Partner age is required")
-    private String partnerAge;
+    @NotNull(message = "Partner age is required")
+    private Integer partnerAge;
 
-    @NotBlank(message = "Looking for field is required")
+    @NotBlank(message = "Looking for is required")
     private String lookingFor;
 
-    @NotBlank(message = "Partner height is required")
-    private String partnerHeight;
+    @NotNull(message = "Partner height is required")
+    private Double partnerHeight;
 
     @NotBlank(message = "Eating habits are required")
     private String eatingHabits;

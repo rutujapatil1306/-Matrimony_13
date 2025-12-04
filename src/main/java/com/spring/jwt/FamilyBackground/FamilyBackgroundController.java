@@ -5,6 +5,7 @@ import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
 import com.spring.jwt.utils.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class FamilyBackgroundController {
     @Operation(summary = "Api for FamilyBackground creation")
     @PostMapping("/create")
     public ResponseEntity<BaseResponseDTO> saveFamilyBackground(
-            @RequestBody FamilyBackgroundDTO dto) {
+            @RequestBody @Valid FamilyBackgroundDTO dto) {
 
         Integer userId = SecurityUtil.getCurrentUserId();
         BaseResponseDTO response= service.saveFamilyBackground(userId, dto);

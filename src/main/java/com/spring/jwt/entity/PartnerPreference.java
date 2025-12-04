@@ -19,13 +19,13 @@ public class PartnerPreference {
     private Integer partnerPreferenceId;
 
     @Column(length = 45)
-    private String age;
+    private Integer age;
 
     @Column(length = 45)
     private String lookingFor;
 
     @Column(length = 45)
-    private String height;
+    private Double height;
 
     @Column(length = 45)
     private String eatingHabits;

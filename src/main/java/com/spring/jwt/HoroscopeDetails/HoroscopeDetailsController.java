@@ -6,6 +6,7 @@ import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
 import com.spring.jwt.utils.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class HoroscopeDetailsController {
     @Operation(summary = "Api for profile creation")
     @PostMapping("/create")
     public ResponseEntity<BaseResponseDTO> saveHoroscope(
-            @RequestBody HoroscopeDTO horoscopeDTO) {
+            @RequestBody @Valid HoroscopeDTO horoscopeDTO) {
 
         Integer userId = SecurityUtil.getCurrentUserId();
         BaseResponseDTO response= horoscopeDetailsService.saveHoroscopeDetails(userId, horoscopeDTO);

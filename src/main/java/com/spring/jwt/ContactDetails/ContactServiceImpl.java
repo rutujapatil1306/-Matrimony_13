@@ -81,7 +81,7 @@ public class ContactServiceImpl implements ContactService {
 
         updateContact(existingContact, contactDTO);
         ContactDetails savedContact = contactRepository.save(existingContact);
-        ContactDTO responseDTO = ContactMapper.toDto(savedContact);
+        ContactDTO responseDTO = ContactMapper.toDTO(savedContact);
 
         ApiResponse response = new ApiResponse();
         response.setStatusCode(200);

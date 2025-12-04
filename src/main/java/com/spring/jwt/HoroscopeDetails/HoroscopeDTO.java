@@ -2,6 +2,7 @@ package com.spring.jwt.HoroscopeDetails;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +16,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class HoroscopeDTO {
 
-    @NotBlank(message = "Date of birth required")
+    @NotNull(message = "Date of birth required")
+    @Past(message = "Birth date must be in the past")
     private Date dob;
 
     @NotBlank(message = "Birth time required")

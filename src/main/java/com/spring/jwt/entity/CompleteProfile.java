@@ -46,6 +46,9 @@ public class CompleteProfile {
     @JoinColumn(name = "documentId")
     private Document document;
 
+    @Column(name = "profile_completed")
+    private boolean profileCompleted = false;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
