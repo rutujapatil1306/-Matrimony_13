@@ -1,9 +1,11 @@
 package com.spring.jwt.CompleteProfile;
 
+import com.spring.jwt.dto.DisplayProfileDTO;
 import com.spring.jwt.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,4 +23,8 @@ public class CompleteProfileController {
         return ResponseEntity.ok(completeProfileService.getFullProfile(userId));
     }
 
+    @GetMapping("/getDisplayProfile/{userId}")
+    public DisplayProfileDTO getPublicProfile(@PathVariable Integer userId) {
+        return completeProfileService.getDisplayProfile(userId);
+    }
 }

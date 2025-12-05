@@ -4,6 +4,8 @@ import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.exception.EducationNotFoundException;
+import com.spring.jwt.exception.HoroscopeNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
@@ -18,6 +20,7 @@ public class EducationServiceImpl implements EducationService {
     private final EducationRepository educationRepository;
     private final UserRepository userRepository;
     private final CompleteProfileRepository completeProfileRepository;
+    private final EducationMapper mapper;
 
 
 
@@ -26,7 +29,7 @@ public class EducationServiceImpl implements EducationService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
-        EducationAndProfession save = EducationMapper.toEntity(educationDTO);
+        EducationAndProfession save = mapper.toEntity(educationDTO);
         save.setUser(user);
         educationRepository.save(save);
 
@@ -54,7 +57,7 @@ public class EducationServiceImpl implements EducationService {
 
         EducationAndProfession savedEducation = educationRepository.save(existing);
 
-        EducationDTO responseDTO = EducationMapper.toDTO(savedEducation);
+        EducationDTO responseDTO = mapper.toDTO(savedEducation);
 
         ApiResponse response = new ApiResponse();
         response.setStatusCode(200);
@@ -62,6 +65,12 @@ public class EducationServiceImpl implements EducationService {
         response.setData(responseDTO);
 
         return response;
+    }
+
+    @Override
+    public EducationDTO getByUserId(Integer userId) {
+        return educationRepository.findByUserId(userId).map(mapper::toDTO)
+                .orElseThrow(()-> new EducationNotFoundException("education not found with id :"+ userId));
     }
 
 

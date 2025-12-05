@@ -34,6 +34,9 @@ public class PartnerPreference {
     private String countryLivingIn;
 
     @Column(length = 45)
+    private String cityLivingIn;
+
+    @Column(length = 45)
     private String complexion;
 
     @Column(length = 45)
@@ -46,13 +49,16 @@ public class PartnerPreference {
     private String education;
 
     @Column(length = 45)
+    private Boolean mangal;
+
+    @Column(length = 45)
     private String residentStatus;
 
     @Column(length = 250)
-    private String preference;
+    private String partnerOccupation;
 
     @Column(length = 45)
-    private String status1;
+    private Integer partnerIncome;
 
     @OneToOne
     @JoinColumn(name = "user_id")

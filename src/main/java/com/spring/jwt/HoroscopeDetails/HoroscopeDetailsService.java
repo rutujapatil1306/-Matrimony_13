@@ -10,7 +10,7 @@ public interface HoroscopeDetailsService {
 
     BaseResponseDTO saveHoroscopeDetails(Integer userId, HoroscopeDTO horoscopeDTO);
 
-    HoroscopeDTO getHoroscopeById(Integer id);
+    HoroscopeDTO getHoroscopeById(Integer userId);
 
     HoroscopeDTO updateHoroscope(Integer id, HoroscopeDTO dto);
 }

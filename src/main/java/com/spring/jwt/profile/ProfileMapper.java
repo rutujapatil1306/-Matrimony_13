@@ -23,6 +23,7 @@ public class ProfileMapper {
         dto.setMobileNumber(profile.getMobileNumber());
         //dto.setCompleteProfile(profile.getCompleteProfile());
         dto.setGender(profile.getGender());
+        dto.setAge(profile.getAge());
         dto.setReligion(profile.getReligion());
         dto.setCaste(profile.getCaste());
         dto.setMaritalStatus(profile.getMaritalStatus());
@@ -58,6 +59,7 @@ public class ProfileMapper {
         profile.setMobileNumber(dto.getMobileNumber());
         //profile.setCompleteProfile(dto.getCompleteProfile());
         profile.setGender(dto.getGender());
+        profile.setAge(dto.getAge());
         profile.setReligion(dto.getReligion());
         profile.setCaste(dto.getCaste());
         profile.setMaritalStatus(dto.getMaritalStatus());

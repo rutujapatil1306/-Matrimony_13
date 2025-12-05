@@ -46,6 +46,9 @@ public class ProfileDTO {
 
         private String userProfileStatus;  // optional
 
+        @NotNull(message = "Age cannot be empty")
+        private Integer age;
+
         @NotBlank(message = "Gender cannot be empty")
         @Pattern(regexp = "Male|Female|Other", message = "Gender must be Male, Female, or Other")
         private String gender;
@@ -68,7 +71,7 @@ public class ProfileDTO {
         @NotNull(message = "Weight cannot be empty")
         @Min(value = 20, message = "Weight must be above 20 kg")
         @Max(value = 300, message = "Weight must be below 300 kg")
-        private Double weight;
+        private Integer weight;
 
         @NotBlank(message = "Blood group cannot be empty")
         @Pattern(regexp = "^(A|B|AB|O)[+-]$",

@@ -25,23 +25,25 @@ public class FamilyBackgroundDTO {
     @NotBlank(message = "Mother occupation required")
     private String motherOccupation;
 
-    @NotBlank(message = "brothers field required")
-    private String brothers;
+    @NotNull(message = "brothers field required")
+    private Integer brothers;
 
-    @NotBlank(message = "married brothers field required")
-    private String marriedBrothers;
+    @NotNull(message = "married brothers field required")
+    private Integer marriedBrothers;
 
-    @NotBlank(message = "sisters field required")
-    private String sisters;
+    @NotNull(message = "sisters field required")
+    private Integer sisters;
 
-    @NotBlank(message = "married sisters field required")
-    private String marriedSisters;
+    @NotNull(message = "married sisters field required")
+    private Integer marriedSisters;
 
     @NotNull(message = "inter caste in family field required")
     private Boolean interCasteInFamily;
 
     @NotBlank(message = "parent residing field required")
     private String parentResiding;
+
+    private String familyWealth;
 
     @NotBlank(message = "mama surname required")
     private String mamaSurname;

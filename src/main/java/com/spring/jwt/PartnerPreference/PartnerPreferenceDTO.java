@@ -1,5 +1,6 @@
 package com.spring.jwt.PartnerPreference;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,9 @@ public class PartnerPreferenceDTO {
     @NotBlank(message = "Country living in is required")
     private String countryLivingIn;
 
+    @NotBlank(message = "City living in is required")
+    private String cityLivingIn;
+
     @NotBlank(message = "Partner complexion is required")
     private String partnerComplexion;
 
@@ -38,10 +42,16 @@ public class PartnerPreferenceDTO {
     @NotBlank(message = "Partner education is required")
     private String partnerEducation;
 
+    @NotNull(message = "Partner mangal is required")
+    private Boolean mangal;
+
     @NotBlank(message = "Partner resident status is required")
     private String partnerResidentStatus;
 
-    @NotBlank(message = "Preference is required")
-    private String preference;
+    @NotBlank(message = "partner occupation is required")
+    private String partnerOccupation;
+
+    @NotBlank(message = "partner income is required")
+    private Integer partnerIncome;
 
 }

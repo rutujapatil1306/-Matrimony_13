@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EducationMapper {
 
-    public static EducationDTO toDTO(EducationAndProfession edu) {
+    public EducationDTO toDTO(EducationAndProfession edu) {
         if (edu == null){
             return null;
         }
@@ -23,7 +23,7 @@ public class EducationMapper {
         return dto;
     }
 
-    public static EducationAndProfession toEntity(EducationDTO dto) {
+    public EducationAndProfession toEntity(EducationDTO dto) {
         if (dto == null){
             return null;
         }

@@ -35,7 +35,7 @@ public class ContactController {
         ApiResponse response = contactService.getByUserId(userId);
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body(ApiResponse.success("Retrieved Data By Using User ID",response));
+                .body(ApiResponse.success("Contact details for userId : " +userId,response));
     }
 
     @PatchMapping("/update")

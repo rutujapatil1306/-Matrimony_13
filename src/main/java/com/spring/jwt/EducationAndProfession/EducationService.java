@@ -9,5 +9,5 @@ public interface EducationService {
 
     ApiResponse updateByUserdID(Integer userID, EducationDTO educationDTO);
 
-
+    EducationDTO getByUserId(Integer userId);
 }

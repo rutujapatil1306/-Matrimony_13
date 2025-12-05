@@ -29,12 +29,13 @@ public class UserProfile {
     @Enumerated(EnumType.STRING)
     private Status status=Status.DEACTIVE;
 
+    private Integer age;
     private String gender;
     private String religion;
     private String caste;
     private String maritalStatus;
     private String height;
-    private Double weight;
+    private Integer weight;
 
     private String bloodGroup;
     private String complexion;

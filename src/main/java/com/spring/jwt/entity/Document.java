@@ -31,6 +31,10 @@ public class Document {
     @Column(columnDefinition = "MEDIUMBLOB", nullable = false)
     private byte[] fileData;
 
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB", nullable = false)
+    private byte[] profilePhoto;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

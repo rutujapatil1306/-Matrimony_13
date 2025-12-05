@@ -23,6 +23,7 @@ public class FamilyBackgroundMapper {
         dto.setMarriedSisters(bg.getMarriedSisters());
         dto.setInterCasteInFamily(bg.getInterCasteInFamily());
         dto.setParentResiding(bg.getParentResiding());
+        dto.setFamilyWealth(bg.getFamilyWealth());
         dto.setMamaSurname(bg.getMamaSurname());
         dto.setMamaPlace(bg.getMamaPlace());
         dto.setRelativeSurnames(bg.getRelativeSurnames());
@@ -48,6 +49,7 @@ public class FamilyBackgroundMapper {
         bg.setMarriedSisters(dto.getMarriedSisters());
         bg.setInterCasteInFamily(dto.getInterCasteInFamily());
         bg.setParentResiding(dto.getParentResiding());
+        bg.setFamilyWealth(dto.getFamilyWealth());
         bg.setMamaSurname(dto.getMamaSurname());
         bg.setMamaPlace(dto.getMamaPlace());
         bg.setRelativeSurnames(dto.getRelativeSurnames());
