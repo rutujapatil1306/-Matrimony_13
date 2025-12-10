@@ -1,5 +1,7 @@
 package com.spring.jwt.CompleteProfile;
 
+import com.spring.jwt.Document.DocumentDTO;
+import com.spring.jwt.Document.DocumentService;
 import com.spring.jwt.EducationAndProfession.EducationDTO;
 import com.spring.jwt.EducationAndProfession.EducationService;
 import com.spring.jwt.FamilyBackground.FamilyBackgroundDTO;
@@ -12,6 +14,7 @@ import com.spring.jwt.dto.DisplayProfileDTO;
 import com.spring.jwt.dto.PublicProfileDTO;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.Enums.Gender;
+import com.spring.jwt.entity.Document;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.mapper.DisplayProfileMapper;
 import com.spring.jwt.profile.ProfileDTO;
@@ -34,6 +37,7 @@ public class CompleteProfileService {
     private final FamilyBackgroundService familyService;
     private final PartnerPreferenceService partnerPreferenceService;
     private final DisplayProfileMapper displayProfileMapper;
+    private final DocumentService documentService;
 
     public FullProfileDTO getFullProfile(Integer userId) {
 
@@ -51,6 +55,7 @@ public class CompleteProfileService {
         HoroscopeDTO horoscope = horoscopeService.getHoroscopeById(userId);
         FamilyBackgroundDTO family = familyService.getBackground(userId);
         PartnerPreferenceDTO partnerPreference= partnerPreferenceService.getPreference(userId);
+//        documentService.getDocumentByName()
 
         // Get only ONE profile photo
         //DocumentDTO profilePhoto = documentService.getProfilePhoto(userId);

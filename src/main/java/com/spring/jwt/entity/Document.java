@@ -24,8 +24,6 @@ public class Document {
     @Column(nullable = false, length = 50)
     private String documentName;
 
-    @Column(nullable = false, length = 150)
-    private String fileName;
 
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB", nullable = false)
@@ -35,9 +33,7 @@ public class Document {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    //    @Column(length = 45)
-//    private String status1;
-//
+
     @ManyToOne
     @JoinColumn(name = "complete_profile_id")
     private CompleteProfile completeProfile;

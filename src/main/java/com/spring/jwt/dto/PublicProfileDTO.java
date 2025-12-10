@@ -17,6 +17,7 @@ public class  PublicProfileDTO {
     private Gender gender;
     private Double height;
     private String city;
+    private String nativeDistrict;
     private String education;
     private String occupation;
     private String caste;
