@@ -8,9 +8,9 @@ import org.springframework.data.domain.Pageable;
 public interface ExpressInterestService {
     void sendInterest(Integer fromUserId, Integer toUserId);
 
-    void acceptInterest(Integer userId, Long interestId);
+    InterestResponseDTO acceptInterest(Integer userId, Long interestId);
 
-    void declineInterest(Integer userId, Long interestId);
+    InterestResponseDTO declineInterest(Integer userId, Long interestId);
 
     Page<InterestResponseDTO> getReceivedInterests(Integer userId, InterestStatus status, Pageable pageable);
 

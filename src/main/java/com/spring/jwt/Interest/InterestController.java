@@ -26,7 +26,7 @@ public class InterestController {
     private final ExpressInterestService service;
 
     @PostMapping("/send")
-    public ResponseEntity<ApiResponse<Void>> sendInterest(
+    public ResponseEntity<ApiResponse<InterestResponseDTO>> sendInterest(
             @RequestParam @NotNull Integer toUserId) {
 
         Integer userId = SecurityUtil.getCurrentUserId();
@@ -37,18 +37,18 @@ public class InterestController {
                 .body(ApiResponse.success("Interest sent successfully"));
     }
 
-    @PutMapping("/accept/{interestId}")
-    public ResponseEntity<ApiResponse<Void>> acceptInterest(@PathVariable Long interestId) {
+    @PatchMapping("/accept/{interestId}")
+    public ResponseEntity<ApiResponse<InterestResponseDTO>> acceptInterest(@PathVariable Long interestId) {
         Integer userId = SecurityUtil.getCurrentUserId();
-        service.acceptInterest(userId, interestId);
-        return ResponseEntity.ok(ApiResponse.success("Interest accepted successfully"));
+        InterestResponseDTO interestResponseDTO = service.acceptInterest(userId, interestId);
+        return ResponseEntity.ok(ApiResponse.success("Interest accepted successfully", interestResponseDTO));
     }
 
-    @PutMapping("/decline/{interestId}")
-    public ResponseEntity<ApiResponse<Void>> declineInterest(@PathVariable Long interestId) {
+    @PatchMapping("/decline/{interestId}")
+    public ResponseEntity<ApiResponse<InterestResponseDTO>> declineInterest(@PathVariable Long interestId) {
         Integer userId = SecurityUtil.getCurrentUserId();
-        service.declineInterest(userId, interestId);
-        return ResponseEntity.ok(ApiResponse.success("Interest declined successfully"));
+        InterestResponseDTO interestResponseDTO = service.declineInterest(userId, interestId);
+        return ResponseEntity.ok(ApiResponse.success("Interest declined successfully",interestResponseDTO));
     }
 
 
