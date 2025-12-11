@@ -25,14 +25,14 @@ public class ContactDetails {
     @Column(length = 45, nullable = false)
     private String city;
 
-    @Column(length = 45, nullable = false)
+    @Column(nullable = false)
     private Integer pinCode;
 
-    @Column(length = 45, nullable = false, unique = true)
-    private Long mobileNumber;
+    @Column(nullable = false, unique = true)
+    private String mobileNumber;
 
-    @Column(length = 45, nullable = false)
-    private Long alternateNumber;
+    @Column(nullable = false)
+    private String alternateNumber;
 
     @OneToOne(mappedBy = "contactDetails")
     private CompleteProfile CompleteProfile;

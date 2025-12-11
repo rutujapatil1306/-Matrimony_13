@@ -2,12 +2,14 @@ package com.spring.jwt.EducationAndProfession;
 
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface EducationService {
 
-    BaseResponseDTO create(Integer userID ,EducationDTO educationDTO);
+    BaseResponseDTO createEducationAndProfession(Integer userID ,EducationDTO educationDTO);
 
-    ApiResponse updateByUserdID(Integer userID, EducationDTO educationDTO);
+    ApiResponse updateEducationAndProfession(Integer userID, EducationDTO educationDTO);
 
-    EducationDTO getByUserId(Integer userId);
+    EducationDTO getEducationAndProfession(Integer userId);
+
 }

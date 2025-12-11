@@ -5,8 +5,7 @@ import com.spring.jwt.utils.BaseResponseDTO;
 
 public interface PartnerPreferenceService {
 
-    BaseResponseDTO create(Integer userId, PartnerPreferenceDTO partnerPreferenceDTO);
-    PartnerPreferenceDTO getByUserId(Integer userId);
-
+    BaseResponseDTO createPreference(Integer userId, PartnerPreferenceDTO partnerPreferenceDTO);
+    PartnerPreferenceDTO getPreference(Integer userId);
     ApiResponse updatePreference(Integer userId, PartnerPreferenceDTO partnerPreferenceDTO);
 }

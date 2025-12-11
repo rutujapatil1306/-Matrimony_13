@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Data
@@ -48,6 +51,12 @@ public class CompleteProfile {
 
     @Column(name = "profile_completed")
     private boolean profileCompleted = false;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String documentIds;
+
+    @OneToMany(mappedBy = "completeProfile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Document> documents = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

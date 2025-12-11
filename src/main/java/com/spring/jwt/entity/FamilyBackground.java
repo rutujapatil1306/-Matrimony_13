@@ -19,43 +19,43 @@ public class FamilyBackground {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer familyBackgroundId;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String fathersName;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String fatherOccupation;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String mothersName;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String motherOccupation;
 
-    @Column(length = 45)
+    @Column(nullable = false)
     private Integer brother;
 
-    @Column(length = 45)
+    @Column(nullable = false)
     private Integer marriedBrothers;
 
-    @Column(length = 45)
+    @Column(nullable = false)
     private Integer sisters;
 
-    @Column(length = 45)
+    @Column(nullable = false)
     private Integer marriedSisters;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private Boolean interCasteInFamily;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String parentResiding;
 
     @Column(length = 45)
     private String familyWealth;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String mamaSurname;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String mamaPlace;
 
     @Column(length = 45)

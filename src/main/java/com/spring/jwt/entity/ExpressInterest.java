@@ -1,5 +1,6 @@
 package com.spring.jwt.entity;
 
+import com.spring.jwt.Enums.InterestStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -24,11 +25,11 @@ public class ExpressInterest {
     @JoinColumn(name = "to_user_id", nullable = false)
     private User toUser;
 
-    private String message;
+    //private String message;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private InterestStatus status;  // SENT, ACCEPTED, DECLINED, WITHDRAWN
+    private InterestStatus status;  // ACCEPTED, DECLINED, PENDING
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

@@ -1,13 +1,15 @@
 package com.spring.jwt.dto;
 
+import com.spring.jwt.Enums.Gender;
 import com.spring.jwt.entity.Role;
 import com.spring.jwt.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,7 +31,8 @@ public class UserDTO {
     private String password;
     private Set<String> roles;
 
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
 //    @Schema(
 //    description = "Address of the customer", example = "A/P Pune Main Street Block no 8"

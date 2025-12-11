@@ -31,7 +31,6 @@ public class ContactMapper {
         return contact;
     }
 
-    // ------------------------ TO DTO -----------------------------
     public static ContactDTO toDTO(ContactDetails contact) {
         if (contact == null) return null;
 

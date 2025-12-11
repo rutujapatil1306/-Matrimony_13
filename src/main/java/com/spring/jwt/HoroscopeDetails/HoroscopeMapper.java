@@ -2,7 +2,6 @@ package com.spring.jwt.HoroscopeDetails;
 
 
 import com.spring.jwt.entity.HoroscopeDetails;
-import com.spring.jwt.entity.Status;
 import org.springframework.stereotype.Component;
 
 @Component

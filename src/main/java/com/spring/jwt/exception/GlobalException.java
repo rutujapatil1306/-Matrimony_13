@@ -102,6 +102,18 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(MissingDocumentNameException.class)
+    public ResponseEntity<ErrorResponseDto> handleMissingDocumentNameException(MissingDocumentNameException exception , WebRequest webRequest){
+        log.error("Each file must have a corresponding document name: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(EmptyFieldException.class)
     public ResponseEntity<ErrorResponseDto> handleCommonExceptions(RuntimeException exception, WebRequest webRequest) {
         log.error("Validation error: {}", exception.getMessage());
@@ -112,6 +124,78 @@ public class GlobalException extends ResponseEntityExceptionHandler {
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HoroscopeNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleHoroscopeNotFoundException(HoroscopeNotFoundException exception , WebRequest webRequest){
+        log.error("Horoscope not found: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EducationNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleEducationNotFoundException(EducationNotFoundException exception , WebRequest webRequest){
+        log.error("Education Details not found: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProfileNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleProfileNotFoundException(ProfileNotFoundException exception , WebRequest webRequest){
+        log.error("Profile details not found: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InterestNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleInterestNotFoundException(InterestNotFoundException exception , WebRequest webRequest){
+        log.error("Interest not found: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FamilyBackgroundNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleFamilyBackgroundNotFoundException(FamilyBackgroundNotFoundException exception , WebRequest webRequest){
+        log.error("Family background details not found: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PartnerPreferenceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handlePartnerPreferenceNotFoundException(PartnerPreferenceNotFoundException exception , WebRequest webRequest){
+        log.error("Partner preference details not found: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InvalidOtpException.class)

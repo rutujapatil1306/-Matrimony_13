@@ -24,7 +24,7 @@ public class DisplayProfileMapper {
         if (profile != null) {
             dto.setLastName(profile.getLastName());
             dto.setAge(profile.getAge());
-            dto.setHeight(profile.getHeight());
+            dto.setHeight(String.valueOf(profile.getHeight()));
             dto.setGender(profile.getGender());
             dto.setCaste(profile.getCaste());
             dto.setCity(profile.getCurrentCity());

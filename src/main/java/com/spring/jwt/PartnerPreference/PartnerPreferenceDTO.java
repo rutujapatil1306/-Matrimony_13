@@ -51,7 +51,7 @@ public class PartnerPreferenceDTO {
     @NotBlank(message = "partner occupation is required")
     private String partnerOccupation;
 
-    @NotBlank(message = "partner income is required")
+    @NotNull(message = "partner income is required")
     private Integer partnerIncome;
 
 }

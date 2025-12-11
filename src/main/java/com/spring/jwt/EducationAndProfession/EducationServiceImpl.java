@@ -1,17 +1,18 @@
 package com.spring.jwt.EducationAndProfession;
 
 import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
+import com.spring.jwt.HoroscopeDetails.HelperUtil;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.EducationNotFoundException;
-import com.spring.jwt.exception.HoroscopeNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,9 +24,9 @@ public class EducationServiceImpl implements EducationService {
     private final EducationMapper mapper;
 
 
-
+    @Transactional
     @Override
-    public BaseResponseDTO create(Integer userId ,EducationDTO educationDTO) {
+    public BaseResponseDTO createEducationAndProfession(Integer userId, EducationDTO educationDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
@@ -38,62 +39,46 @@ public class EducationServiceImpl implements EducationService {
         completeProfileRepository.save(completeProfile1);
 
         BaseResponseDTO response = new BaseResponseDTO();
-        response.setCode("200");
-        response.setMessage("Education Saved Successfully");
+        response.setCode("201");
+        response.setMessage("Education and profession details Saved Successfully");
         response.setID(save.getEducationId());
 
         return response;
     }
 
+    @Transactional
     @Override
-    public ApiResponse updateByUserdID(Integer userID, EducationDTO educationDTO) {
+    public ApiResponse updateEducationAndProfession(Integer userID, EducationDTO educationDTO) {
 
         EducationAndProfession existing = educationRepository.findByUserId(userID)
                 .orElseThrow(() -> new UserNotFoundExceptions(
                         "No contact details found for userID: " + userID +
                                 ". Please register first."));
 
-        updateEducation(existing,educationDTO);
+        HelperUtil.getDataIfNotNull(educationDTO::getEducation, existing::setEducation);
+        HelperUtil.getDataIfNotNull(educationDTO::getDegree, existing::setDegree);
+        HelperUtil.getDataIfNotNull(educationDTO::getOccupation, existing::setOccupation);
+        HelperUtil.getDataIfNotNull(educationDTO::getOccupationDetails, existing::setOccupationDetails);
+        HelperUtil.getDataIfNotNull(educationDTO::getIncomePerYear, existing::setIncomePerYear);
+
 
         EducationAndProfession savedEducation = educationRepository.save(existing);
-
         EducationDTO responseDTO = mapper.toDTO(savedEducation);
 
         ApiResponse response = new ApiResponse();
         response.setStatusCode(200);
-        response.setMessage("Education and Profession updated successfully");
+        response.setMessage("Education and Profession details updated successfully");
         response.setData(responseDTO);
 
         return response;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public EducationDTO getByUserId(Integer userId) {
+    public EducationDTO getEducationAndProfession(Integer userId) {
         return educationRepository.findByUserId(userId).map(mapper::toDTO)
-                .orElseThrow(()-> new EducationNotFoundException("education not found with id :"+ userId));
+                .orElseThrow(()-> new EducationNotFoundException
+                        ("education and profession details not found for userId :"+ userId));
     }
-
-
-    private void updateEducation(EducationAndProfession existing, EducationDTO educationDTO) {
-        if (educationDTO.getEducation() != null) {
-            existing.setEducation(educationDTO.getEducation());
-        }
-        if (educationDTO.getDegree() != null) {
-            existing.setDegree(educationDTO.getDegree());
-        }
-        if (educationDTO.getOccupation() != null) {
-            existing.setOccupation(educationDTO.getOccupation());
-        }
-        if (educationDTO.getOccupationDetails() != null) {
-            existing.setOccupationDetails(educationDTO.getOccupationDetails());
-        }
-        if (educationDTO.getIncomePerYear() != null){
-            existing.setIncomePerYear(educationDTO.getIncomePerYear());
-        }
-//        if (educationDTO.getCompleteProfile()!=null){
-//            existing.setCompleteProfile("Complete");
-//        }
-    }
-
 
 }

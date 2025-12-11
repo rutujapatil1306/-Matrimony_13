@@ -1,6 +1,6 @@
 package com.spring.jwt.entity;
 
-import com.spring.jwt.utils.StringEncryptConverter;
+import com.spring.jwt.Enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -37,14 +37,12 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "Gender")
-    private String gender;
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
-    @Column(name = "CompleteProfile")
+    @Column(name = "completeProfile")
     private Boolean status;
-
-
-
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;

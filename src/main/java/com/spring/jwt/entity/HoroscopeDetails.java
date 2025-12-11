@@ -1,12 +1,10 @@
 package com.spring.jwt.entity;
 
+import com.spring.jwt.Enums.Status;
 import jakarta.persistence.*;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,13 +20,13 @@ public class HoroscopeDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer horoscopeDetailsId;
 
-    @Column(length = 45, nullable = false)
+    @Column(nullable = false)
     private Date dob;
 
     @Column(length = 45, nullable = false)
     private String time;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String birthPlace;
 
     @Column(length = 45, nullable = false)

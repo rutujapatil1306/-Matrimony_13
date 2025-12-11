@@ -1,17 +1,17 @@
 package com.spring.jwt.PartnerPreference;
 
-import com.spring.jwt.HoroscopeDetails.HoroscopeDTO;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
 import com.spring.jwt.utils.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/partnerPreference")
+@RequestMapping("/api/v1/partnerPreference")
 @RequiredArgsConstructor
 public class PartnerPreferenceController {
 
@@ -19,12 +19,12 @@ public class PartnerPreferenceController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<BaseResponseDTO> create(
-            @RequestBody PartnerPreferenceDTO partnerPreferenceDTO) {
+    public ResponseEntity<BaseResponseDTO> createPreference(
+            @RequestBody @Valid PartnerPreferenceDTO partnerPreferenceDTO) {
 
 
         Integer userId = SecurityUtil.getCurrentUserId();
-        BaseResponseDTO response = partnerPreferenceService.create(userId, partnerPreferenceDTO);
+        BaseResponseDTO response = partnerPreferenceService.createPreference(userId, partnerPreferenceDTO);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -33,20 +33,20 @@ public class PartnerPreferenceController {
 
     @Operation(summary = "Fetching partner preference details using user id")
     @GetMapping("/get")
-    public ResponseEntity<ApiResponse<PartnerPreferenceDTO>> getHoroscopeByID() {
+    public ResponseEntity<ApiResponse<PartnerPreferenceDTO>> getPreference() {
 
         Integer userId = SecurityUtil.getCurrentUserId();
-        PartnerPreferenceDTO preference = partnerPreferenceService.getByUserId(userId);
+        PartnerPreferenceDTO preference = partnerPreferenceService.getPreference(userId);
 
         return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(ApiResponse.success("Partner preference Details For Id " + userId, preference));
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success("Partner preference Details For userId " + userId, preference));
     }
 
 
     @PatchMapping("/update")
-    public ResponseEntity<ApiResponse<HoroscopeDTO>> updateByUserID(
-            @RequestBody PartnerPreferenceDTO partnerPreferenceDTO) {
+    public ResponseEntity<ApiResponse<PartnerPreferenceDTO>> updatePreference(
+            @RequestBody @Valid PartnerPreferenceDTO partnerPreferenceDTO) {
 
         Integer userId = SecurityUtil.getCurrentUserId();
         partnerPreferenceService.updatePreference(userId, partnerPreferenceDTO);

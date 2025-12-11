@@ -21,6 +21,7 @@ public class ProfileMapper {
         dto.setDistrict(profile.getDistrict());
         dto.setPinCode(profile.getPinCode());
         dto.setMobileNumber(profile.getMobileNumber());
+        dto.setEmail(profile.getMail());
         //dto.setCompleteProfile(profile.getCompleteProfile());
         dto.setGender(profile.getGender());
         dto.setAge(profile.getAge());
@@ -57,6 +58,7 @@ public class ProfileMapper {
         profile.setDistrict(dto.getDistrict());
         profile.setPinCode(dto.getPinCode());
         profile.setMobileNumber(dto.getMobileNumber());
+        profile.setMail(dto.getEmail());
         //profile.setCompleteProfile(dto.getCompleteProfile());
         profile.setGender(dto.getGender());
         profile.setAge(dto.getAge());

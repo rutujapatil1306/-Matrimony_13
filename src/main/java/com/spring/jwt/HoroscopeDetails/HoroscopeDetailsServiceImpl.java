@@ -8,9 +8,11 @@ import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.HoroscopeNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
+import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -23,6 +25,7 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService{
     private final CompleteProfileRepository repository;
 
     @Override
+    @Transactional
     public BaseResponseDTO saveHoroscopeDetails(Integer userId, HoroscopeDTO dto) {
 
         User user = userRepository.findById(userId)
@@ -45,54 +48,39 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public HoroscopeDTO getHoroscopeById(Integer userId) {
         return horoscopeDetailsRepository.findByUserId(userId).map(horoscopeMapper::toDTO)
                 .orElseThrow(()-> new HoroscopeNotFoundException("horoscope not found with id :"+ userId));
     }
 
     @Override
-    public HoroscopeDTO updateHoroscope(Integer userId, HoroscopeDTO dto){
+    @Transactional
+    public ApiResponse updateHoroscope(Integer userId, HoroscopeDTO dto){
         HoroscopeDetails horoscope = horoscopeDetailsRepository.findByUserId(userId)
                 .orElseThrow(() -> new HoroscopeNotFoundException("Horoscope not found"));
 
-        if (dto.getBirthPlace() != null) {
-            horoscope.setBirthPlace(dto.getBirthPlace());
-        }
-        if (dto.getDob() != null) {
-            horoscope.setDob(dto.getDob());
-        }
-        if (dto.getTime() != null) {
-            horoscope.setTime(dto.getTime());
-        }
-        if (dto.getRashi() != null) {
-            horoscope.setRashi(dto.getRashi());
-        }
-        if (dto.getNakshatra() != null) {
-            horoscope.setNakshatra(dto.getNakshatra());
-        }
-        if (dto.getCharan() != null) {
-            horoscope.setCharan(dto.getCharan());
-        }
-        if (dto.getNadi() != null) {
-            horoscope.setNadi(dto.getNadi());
-        }
-        if (dto.getGan() != null) {
-            horoscope.setGan(dto.getGan());
-        }
-        if (dto.getMangal() != null) {
-            horoscope.setMangal(dto.getMangal());
-        }
-        if (dto.getGotra() != null) {
-            horoscope.setGotra(dto.getGotra());
-        }
-        if (dto.getDevak() != null) {
-            horoscope.setDevak(dto.getDevak());
-        }
-        if (dto.getNadi() != null) {
-            horoscope.setNadi(dto.getNadi());
-        }
+        HelperUtil.getDataIfNotNull(dto::getBirthPlace, horoscope::setBirthPlace);
+        HelperUtil.getDataIfNotNull(dto::getCharan, horoscope::setCharan);
+        HelperUtil.getDataIfNotNull(dto::getGan, horoscope::setGan);
+        HelperUtil.getDataIfNotNull(dto::getGotra, horoscope::setGotra);
+        HelperUtil.getDataIfNotNull(dto::getDevak, horoscope::setDevak);
+        HelperUtil.getDataIfNotNull(dto::getMangal, horoscope::setMangal);
+        HelperUtil.getDataIfNotNull(dto::getNadi, horoscope::setNadi);
+        HelperUtil.getDataIfNotNull(dto::getNakshatra, horoscope::setNakshatra);
+        HelperUtil.getDataIfNotNull(dto::getRashi, horoscope::setRashi);
+        HelperUtil.getDataIfNotNull(dto::getTime, horoscope::setTime);
+        HelperUtil.getDataIfNotNull(dto::getDob, horoscope::setDob);
+
         HoroscopeDetails savedHoroscope = horoscopeDetailsRepository.save(horoscope);
-        return horoscopeMapper.toDTO(savedHoroscope);
+        HoroscopeDTO responseDTO = horoscopeMapper.toDTO(savedHoroscope);
+
+        ApiResponse response = new ApiResponse();
+        response.setStatusCode(200);
+        response.setMessage("Horoscope details updated successfully");
+        response.setData(responseDTO);
+
+        return response;
     }
 //
 //    @Override

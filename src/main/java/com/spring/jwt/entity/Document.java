@@ -22,27 +22,21 @@ public class Document {
 
     // Example: "Aadhaar", "PAN", "Resume"
     @Column(nullable = false, length = 50)
-    private String documentType;
-
-    @Column(nullable = false, length = 150)
-    private String fileName;
+    private String documentName;
 
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB", nullable = false)
     private byte[] fileData;
 
-    @Lob
-    @Column(columnDefinition = "MEDIUMBLOB", nullable = false)
-    private byte[] profilePhoto;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-//    @Column(length = 45)
+    //    @Column(length = 45)
 //    private String status1;
 //
-    @OneToOne(mappedBy = "document")
+    @ManyToOne
+    @JoinColumn(name = "complete_profile_id")
     private CompleteProfile completeProfile;
 
 }

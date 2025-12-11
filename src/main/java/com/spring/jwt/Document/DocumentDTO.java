@@ -17,4 +17,11 @@ public class DocumentDTO {
 
     @NotNull(message = "Document file is required")
     @Size(min = 1, max = 5_000_000, message = "File size must be between 1 byte and 5 MB")
-    private byte[] documentFile;}
+    private byte[] documentFile;
+
+    private Integer documentId;
+
+    private String fileData;  // base64 encoded
+
+
+}

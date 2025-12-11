@@ -1,5 +1,8 @@
 package com.spring.jwt.dto;
 
+import com.spring.jwt.Enums.Gender;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,7 +14,8 @@ public class DisplayProfileDTO {
     private String lastName;
     private Integer age;
     private String height;
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     private String city;
     private String caste;
     private Integer weight;

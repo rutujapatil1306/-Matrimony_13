@@ -19,10 +19,12 @@ public class ContactDTO {
     @Positive(message = "pincode should be positive")
     private Integer pinCode;
 
-    @NotNull(message = "mobile number required")
-    private Long mobileNumber;
+    @NotBlank(message = "Mobile number is required")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be 10 digits")
+    private String mobileNumber;
 
-    @NotNull(message = "alternate number required")
-    private Long alternateNumber;
+    @NotBlank(message = "Mobile number is required")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be 10 digits")
+    private String alternateNumber;
 
 }

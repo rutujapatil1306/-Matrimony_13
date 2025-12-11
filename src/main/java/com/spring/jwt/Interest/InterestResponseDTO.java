@@ -1,6 +1,6 @@
 package com.spring.jwt.Interest;
 
-import com.spring.jwt.entity.InterestStatus;
+import com.spring.jwt.Enums.InterestStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -8,9 +8,10 @@ import java.time.LocalDateTime;
 @Data
 public class InterestResponseDTO {
 
+    private Integer interestId;
     private Integer fromUserId;
     private Integer toUserId;
-    private String message;
+    //private String message;
     private InterestStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime respondedAt;

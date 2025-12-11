@@ -1,5 +1,8 @@
 package com.spring.jwt.profile;
 
+import com.spring.jwt.Enums.Gender;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,18 +43,21 @@ public class ProfileDTO {
         @Max(value = 999999, message = "Pincode must be 6 digits")
         private Integer pinCode;
 
-        @NotNull(message = "Mobile number cannot be empty")
+        @NotBlank(message = "Mobile number is required")
         @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be 10 digits")
         private String mobileNumber;
+
+        @NotBlank(message = "email cannot be empty")
+        private String email;
 
         private String userProfileStatus;  // optional
 
         @NotNull(message = "Age cannot be empty")
         private Integer age;
 
-        @NotBlank(message = "Gender cannot be empty")
-        @Pattern(regexp = "Male|Female|Other", message = "Gender must be Male, Female, or Other")
-        private String gender;
+        @NotNull(message = "Gender cannot be empty")
+        @Enumerated(EnumType.STRING)
+        private Gender gender;
 
         @NotBlank(message = "Religion cannot be empty")
         private String religion;
@@ -63,10 +69,8 @@ public class ProfileDTO {
         @Size(max = 45, message = "Marital status cannot exceed 45 characters")
         private String maritalStatus;
 
-        @NotBlank(message = "Height cannot be empty")
-        @Pattern(regexp = "^[3-7](\\.[0-9]{1,2})?$",
-                message = "Height must be in format like 5.8 or 5.10")
-        private String height;
+        @NotNull(message = "Height cannot be empty")
+        private Double height;
 
         @NotNull(message = "Weight cannot be empty")
         @Min(value = 20, message = "Weight must be above 20 kg")

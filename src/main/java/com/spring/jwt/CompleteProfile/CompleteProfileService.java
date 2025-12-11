@@ -1,6 +1,6 @@
 package com.spring.jwt.CompleteProfile;
 
-import com.spring.jwt.ContactDetails.ContactService;
+import com.spring.jwt.Document.DocumentDTO;
 import com.spring.jwt.Document.DocumentService;
 import com.spring.jwt.EducationAndProfession.EducationDTO;
 import com.spring.jwt.EducationAndProfession.EducationService;
@@ -11,12 +11,16 @@ import com.spring.jwt.HoroscopeDetails.HoroscopeDetailsService;
 import com.spring.jwt.PartnerPreference.PartnerPreferenceDTO;
 import com.spring.jwt.PartnerPreference.PartnerPreferenceService;
 import com.spring.jwt.dto.DisplayProfileDTO;
+import com.spring.jwt.dto.PublicProfileDTO;
 import com.spring.jwt.entity.CompleteProfile;
+import com.spring.jwt.Enums.Gender;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.mapper.DisplayProfileMapper;
 import com.spring.jwt.profile.ProfileDTO;
 import com.spring.jwt.profile.ProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -31,9 +35,8 @@ public class CompleteProfileService {
     private final HoroscopeDetailsService horoscopeService;
     private final FamilyBackgroundService familyService;
     private final PartnerPreferenceService partnerPreferenceService;
-    private final DocumentService documentService;
-    private final ContactService contactService;
     private final DisplayProfileMapper displayProfileMapper;
+    private final DocumentService documentService;
 
     public FullProfileDTO getFullProfile(Integer userId) {
 
@@ -47,13 +50,12 @@ public class CompleteProfileService {
     public DisplayProfileDTO getDisplayProfile(Integer userId) {
 
         ProfileDTO profile = profileService.getProfile(userId);
-        EducationDTO education = educationService.getByUserId(userId);
+        EducationDTO education = educationService.getEducationAndProfession(userId);
         HoroscopeDTO horoscope = horoscopeService.getHoroscopeById(userId);
         FamilyBackgroundDTO family = familyService.getBackground(userId);
-        PartnerPreferenceDTO partnerPreference= partnerPreferenceService.getByUserId(userId);
-
+        PartnerPreferenceDTO partnerPreference= partnerPreferenceService.getPreference(userId);
         // Get only ONE profile photo
-        //DocumentDTO profilePhoto = documentService.getProfilePhoto(userId);
+       // DocumentDTO profilePhoto = documentService.getDocumentByName(do)
 
         return displayProfileMapper.toDTO(
                 profile,
@@ -61,7 +63,15 @@ public class CompleteProfileService {
                 horoscope,
                 family,
                partnerPreference
+
         );
+    }
+
+    public Page<PublicProfileDTO> getProfile(Pageable pageable, Gender gender) {
+        Page<CompleteProfile> profiles =
+                completeProfileRepository.findByUserProfileGender(gender, pageable);
+
+        return profiles.map(PublicProfileMapper::toDTO);
     }
 
 }

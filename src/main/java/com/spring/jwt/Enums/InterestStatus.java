@@ -1,9 +1,8 @@
-package com.spring.jwt.entity;
+package com.spring.jwt.Enums;
 
 public enum InterestStatus
 {
-    SENT,
     ACCEPTED,
     DECLINED,
-    WITHDRAWN
+    PENDING
 }

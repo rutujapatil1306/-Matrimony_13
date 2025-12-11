@@ -18,46 +18,46 @@ public class PartnerPreference {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer partnerPreferenceId;
 
-    @Column(length = 45)
+    @Column(nullable = false)
     private Integer age;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String lookingFor;
 
-    @Column(length = 45)
+    @Column(nullable = false)
     private Double height;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String eatingHabits;
 
-    @Column(length = 45)
+    @Column(length = 45,nullable = false)
     private String countryLivingIn;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String cityLivingIn;
 
-    @Column(length = 45)
+    @Column(length = 45 ,nullable = false)
     private String complexion;
 
-    @Column(length = 45)
+    @Column(length = 45 ,nullable = false)
     private String religion;
 
-    @Column(length = 45)
+    @Column(length = 45 ,nullable = false)
     private String caste;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String education;
 
-    @Column(length = 45)
+    @Column(nullable = false)
     private Boolean mangal;
 
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String residentStatus;
 
-    @Column(length = 250)
+    @Column(length = 45, nullable = false)
     private String partnerOccupation;
 
-    @Column(length = 45)
+    @Column(nullable = false)
     private Integer partnerIncome;
 
     @OneToOne

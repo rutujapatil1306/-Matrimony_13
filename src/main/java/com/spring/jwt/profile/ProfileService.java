@@ -10,6 +10,4 @@ public interface ProfileService {
     ApiResponse updateProfile(Integer userId, ProfileDTO dto);
 
     ProfileDTO getProfile(Integer userId);
-
-    void deleteProfile(Integer userId);
 }

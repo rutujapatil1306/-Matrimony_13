@@ -1,8 +1,12 @@
 package com.spring.jwt.Interest;
 
 import com.spring.jwt.entity.ExpressInterest;
-import com.spring.jwt.entity.InterestStatus;
+import com.spring.jwt.Enums.Gender;
+import com.spring.jwt.Enums.InterestStatus;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.exception.InterestAlreadySentException;
+import com.spring.jwt.exception.InterestNotFoundException;
+import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,71 +24,55 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
     private final UserRepository userRepository;
     private final InterestMapper mapper;
 
-    // ================================================================
-    // SEND INTEREST
-    // ================================================================
     @Override
-    public void sendInterest(Integer fromUserId, Integer toUserId, String message) {
+    public void sendInterest(Integer fromUserId, Integer toUserId) {
 
         if (fromUserId.equals(toUserId)) {
             throw new IllegalArgumentException("You cannot send interest to yourself.");
         }
 
         User fromUser = userRepository.findById(fromUserId)
-                .orElseThrow(() -> new RuntimeException("Sender user not found"));
+                .orElseThrow(() -> new UserNotFoundExceptions("Sender user not found"));
 
         User toUser = userRepository.findById(toUserId)
-                .orElseThrow(() -> new RuntimeException("Receiver user not found"));
+                .orElseThrow(() -> new UserNotFoundExceptions("Receiver user not found"));
 
-        // -------------------------------------------------------------
-        // 1️⃣ Gender check (MOST IMPORTANT)
-        // -------------------------------------------------------------
-        String senderGender = fromUser.getGender();
-        String receiverGender = toUser.getGender();
+        Gender senderGender = fromUser.getGender();
+        Gender receiverGender = toUser.getGender();
 
-        if (senderGender.equalsIgnoreCase(receiverGender)) {
+        if (senderGender == receiverGender) {
             throw new IllegalStateException("You can send interest only to opposite gender.");
         }
 
-        // Optional: Allow only Male → Female or Female → Male
-        if (
-                !(senderGender.equalsIgnoreCase("Male") && receiverGender.equalsIgnoreCase("Female")) &&
-                        !(senderGender.equalsIgnoreCase("Female") && receiverGender.equalsIgnoreCase("Male"))
-        ) {
-            throw new IllegalStateException("Same-gender interest is not allowed.");
-        }
-
-        // -------------------------------------------------------------
-        // 2️⃣ Block duplicates
-        // -------------------------------------------------------------
         boolean exists = interestRepository.existsByFromUserIdAndToUserId(fromUserId, toUserId);
         if (exists) {
-            throw new IllegalStateException("Interest already sent to this user.");
+            throw new InterestAlreadySentException("Interest already sent to this user.");
         }
 
-        // -------------------------------------------------------------
-        // 3️⃣ Create interest
-        // -------------------------------------------------------------
         ExpressInterest interest = new ExpressInterest();
         interest.setFromUser(fromUser);
         interest.setToUser(toUser);
-        interest.setStatus(InterestStatus.SENT);
+        interest.setStatus(InterestStatus.PENDING);
         interest.setCreatedAt(LocalDateTime.now());
-        interest.setMessage(message);
+        //interest.setMessage(message);
 
         interestRepository.save(interest);
     }
 
 
 
-    // ================================================================
-    // ACCEPT INTEREST
-    // ================================================================
     @Override
     public void acceptInterest(Integer currentUserId, Long interestId) {
 
+        if (currentUserId == null) {
+            throw new IllegalArgumentException("Current user ID cannot be null");
+        }
+        if (interestId == null) {
+            throw new IllegalArgumentException("Interest ID cannot be null");
+        }
+
         ExpressInterest interest = interestRepository.findById(interestId)
-                .orElseThrow(() -> new RuntimeException("Interest request not found"));
+                .orElseThrow(() -> new InterestNotFoundException("Interest request not found"));
 
         if (!interest.getToUser().getId().equals(currentUserId)) {
             throw new SecurityException("You are not authorized to accept this request");
@@ -95,15 +83,18 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
         interestRepository.save(interest);
     }
 
-
-    // ================================================================
-    // DECLINE INTEREST
-    // ================================================================
     @Override
     public void declineInterest(Integer currentUserId, Long interestId) {
 
+        if (currentUserId == null) {
+            throw new IllegalArgumentException("Current user ID cannot be null");
+        }
+        if (interestId == null) {
+            throw new IllegalArgumentException("Interest ID cannot be null");
+        }
+
         ExpressInterest interest = interestRepository.findById(interestId)
-                .orElseThrow(() -> new RuntimeException("Interest request not found"));
+                .orElseThrow(() -> new InterestNotFoundException("Interest request not found"));
 
         if (!interest.getToUser().getId().equals(currentUserId)) {
             throw new SecurityException("You are not authorized to decline this request");
@@ -114,34 +105,33 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
         interestRepository.save(interest);
     }
 
-
-    // ================================================================
-    // GET RECEIVED INTERESTS
-    // ================================================================
-
     @Override
-    public Page<InterestResponseDTO> getReceived(Integer userId, Pageable pageable) {
-
-        return interestRepository.findByToUserId(userId, pageable)
-                .map(mapper::toDTO);
+    public Page<InterestResponseDTO> getReceivedInterests(Integer userId, InterestStatus status, Pageable pageable) {
+        Page<ExpressInterest> interests =
+                interestRepository.findByToUserIdAndStatus(userId, status, pageable);
+        return interests.map(mapper::toDTO);
     }
 
 
-
-    // ================================================================
-    // GET SENT INTERESTS
-    // ================================================================
     @Override
-    public Page<InterestResponseDTO> getSent(Integer userId, Pageable pageable) {
-
-        return interestRepository.findByFromUserId(userId, pageable)
-                .map(mapper::toDTO);
+    public Page<InterestResponseDTO> getSentInterests(Integer userId, InterestStatus status, Pageable pageable) {
+        Page<ExpressInterest> result =
+                interestRepository.findByFromUserIdAndStatus(userId, status, pageable);
+        return result.map(mapper::toDTO);
     }
-
-    @Override
-    public Page<InterestResponseDTO> getPending(Integer userId, Pageable pageable) {
-        return null;
-    }
-
+//
+//    @Override
+//    public Page<InterestResponseDTO> getPendingReceived(Integer userId, Pageable pageable) {
+//
+//        Page<ExpressInterest> page = interestRepository.findByToUserIdAndStatus(userId, InterestStatus.PENDING, pageable);
+//        return page.map(mapper::toDTO);
+//    }
+//
+//    @Override
+//    public Page<InterestResponseDTO> getPendingSent(Integer userId, Pageable pageable) {
+//
+//        Page<ExpressInterest> page = interestRepository.findByFromUserIdAndStatus(userId, InterestStatus.PENDING, pageable);
+//        return page.map(mapper::toDTO);
+//    }
 
 }

@@ -1,4 +1,4 @@
-package com.spring.jwt.entity;
+package com.spring.jwt.Enums;
 
 public enum Status
 {

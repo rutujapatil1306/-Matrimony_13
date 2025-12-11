@@ -144,7 +144,7 @@ public class AppConfig {
                 .requestMatchers("/api/v1/exam/**").permitAll()
                 .requestMatchers("/api/v1/**").permitAll()
                 .requestMatchers("/api/users/**").permitAll()
-                .requestMatchers("/api/completeProfile/getDisplayProfile/**").permitAll()
+                .requestMatchers("/api/completeProfile/getProfile/**").permitAll()
 //                .requestMatchers("/api/education/**").permitAll()
 //                .requestMatchers("/api/contact/**").permitAll()
 //                .requestMatchers("/api/partnerPreference/**").permitAll()

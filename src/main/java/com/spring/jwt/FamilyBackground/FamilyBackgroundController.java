@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/familyBackground")
+@RequestMapping("/api/v1/familyBackground")
 @RequiredArgsConstructor
 public class FamilyBackgroundController {
 
@@ -36,21 +36,23 @@ public class FamilyBackgroundController {
 
     @Operation(summary = "Fetching FamilyBackground details using user id")
     @GetMapping("/get")
-    public ResponseEntity<ApiResponse<FamilyBackgroundDTO>> getFamilyBackgroundById() {
+    public ResponseEntity<ApiResponse<FamilyBackgroundDTO>> getFamilyBackground() {
 
         Integer userId = SecurityUtil.getCurrentUserId();
         FamilyBackgroundDTO background = service.getBackground(userId);
+
         return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(ApiResponse.success("FamilyBackground Details For Id " + userId, background));
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success("FamilyBackground Details For userId : " + userId, background));
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<ApiResponse<HoroscopeDTO>> updateByUserID(
-            @RequestBody FamilyBackgroundDTO dto){
+    public ResponseEntity<ApiResponse<FamilyBackgroundDTO>> updateFamilyBackground(
+            @RequestBody @Valid FamilyBackgroundDTO dto){
 
         Integer userId = SecurityUtil.getCurrentUserId();
         service.updateBackground(userId,dto);
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success("Family Background Updated Successfully !"));

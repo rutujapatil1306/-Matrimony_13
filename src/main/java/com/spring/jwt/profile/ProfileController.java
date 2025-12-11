@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/profile")
+@RequestMapping("/api/v1/profile")
 @RequiredArgsConstructor
 @Validated
 @Tag(name = "Profile Api", description = "Api for profile management")
@@ -33,25 +33,25 @@ public class ProfileController {
       }
 
     @PatchMapping("/update")
-    public ResponseEntity<ApiResponse<ProfileDTO>> updateByUserID(
-            @RequestBody ProfileDTO dto){
+    public ResponseEntity<ApiResponse<ProfileDTO>> updateProfile(
+            @RequestBody @Valid ProfileDTO dto){
 
         Integer userId = SecurityUtil.getCurrentUserId();
         profileService.updateProfile(userId, dto);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ApiResponse.success("Profile Updated Successfully !"));
+                .body(ApiResponse.success("Profile updated successfully !"));
     }
 
     @GetMapping("/get")
-    public ResponseEntity<ApiResponse<ProfileDTO>> getProfileById(){
+    public ResponseEntity<ApiResponse<ProfileDTO>> getProfile(){
 
         Integer userId = SecurityUtil.getCurrentUserId();
         ProfileDTO response= profileService.getProfile(userId);
 
         return ResponseEntity
-                .status(HttpStatus.FOUND)
+                .status(HttpStatus.OK)
                 .body(ApiResponse.success("Profile details for user id :"+ userId, response));
     }
 
