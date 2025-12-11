@@ -8,6 +8,5 @@ public class SendInterestRequestDTO {
 
     @NotNull
     private Integer toUserId;
-    private String message;
-
+   // private String message;
 }

@@ -16,9 +16,10 @@ public class InterestMapper {
 
         InterestResponseDTO dto = new InterestResponseDTO();
 
+        dto.setInterestId(i.getInterestId().intValue());
         dto.setFromUserId(i.getFromUser().getId());
         dto.setToUserId(i.getToUser().getId());
-        dto.setMessage(i.getMessage());
+       // dto.setMessage(i.getMessage());
         dto.setStatus(i.getStatus());
         dto.setCreatedAt(i.getCreatedAt());
         dto.setRespondedAt(i.getRespondedAt());

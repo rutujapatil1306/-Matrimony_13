@@ -1,6 +1,5 @@
 package com.spring.jwt.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -36,13 +35,10 @@ public class ContactDetails {
     private String alternateNumber;
 
     @OneToOne(mappedBy = "contactDetails")
-    @JsonIgnore
     private CompleteProfile CompleteProfile;
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
-
 
 }

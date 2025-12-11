@@ -1,6 +1,7 @@
 package com.spring.jwt.EducationAndProfession;
 
 import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
+import com.spring.jwt.HoroscopeDetails.HelperUtil;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.entity.User;
@@ -33,7 +34,7 @@ public class EducationServiceImpl implements EducationService {
         save.setUser(user);
         educationRepository.save(save);
 
-        CompleteProfile completeProfile1 = completeProfileRepository.findByUserId(userId);
+        CompleteProfile completeProfile1 =  completeProfileRepository.findByUserId(userId);
         completeProfile1.setEducationAndProfession(save);
         completeProfileRepository.save(completeProfile1);
 
@@ -54,7 +55,12 @@ public class EducationServiceImpl implements EducationService {
                         "No contact details found for userID: " + userID +
                                 ". Please register first."));
 
-        updateEducation(existing, educationDTO);
+        HelperUtil.getDataIfNotNull(educationDTO::getEducation, existing::setEducation);
+        HelperUtil.getDataIfNotNull(educationDTO::getDegree, existing::setDegree);
+        HelperUtil.getDataIfNotNull(educationDTO::getOccupation, existing::setOccupation);
+        HelperUtil.getDataIfNotNull(educationDTO::getOccupationDetails, existing::setOccupationDetails);
+        HelperUtil.getDataIfNotNull(educationDTO::getIncomePerYear, existing::setIncomePerYear);
+
 
         EducationAndProfession savedEducation = educationRepository.save(existing);
         EducationDTO responseDTO = mapper.toDTO(savedEducation);
@@ -71,19 +77,8 @@ public class EducationServiceImpl implements EducationService {
     @Override
     public EducationDTO getEducationAndProfession(Integer userId) {
         return educationRepository.findByUserId(userId).map(mapper::toDTO)
-                .orElseThrow(() -> new EducationNotFoundException
-                        ("education and profession details not found for userId :" + userId));
+                .orElseThrow(()-> new EducationNotFoundException
+                        ("education and profession details not found for userId :"+ userId));
     }
 
-
-    private void updateEducation(EducationAndProfession existing, EducationDTO educationDTO) {
-        if (educationDTO.getEducation() != null) {
-            existing.setEducation(educationDTO.getEducation());
-
-        }
-    }
 }
-
-
-
-

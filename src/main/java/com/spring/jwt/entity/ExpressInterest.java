@@ -25,7 +25,7 @@ public class ExpressInterest {
     @JoinColumn(name = "to_user_id", nullable = false)
     private User toUser;
 
-    private String message;
+    //private String message;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
