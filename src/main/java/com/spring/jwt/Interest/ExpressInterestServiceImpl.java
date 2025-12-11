@@ -62,7 +62,7 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
 
 
     @Override
-    public void acceptInterest(Integer currentUserId, Long interestId) {
+    public InterestResponseDTO acceptInterest(Integer currentUserId, Long interestId) {
 
         if (currentUserId == null) {
             throw new IllegalArgumentException("Current user ID cannot be null");
@@ -80,11 +80,13 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
 
         interest.setStatus(InterestStatus.ACCEPTED);
         interest.setRespondedAt(LocalDateTime.now());
-        interestRepository.save(interest);
+        ExpressInterest updated = interestRepository.save(interest);
+        return mapper.toDTO(updated);
+
     }
 
     @Override
-    public void declineInterest(Integer currentUserId, Long interestId) {
+    public InterestResponseDTO declineInterest(Integer currentUserId, Long interestId) {
 
         if (currentUserId == null) {
             throw new IllegalArgumentException("Current user ID cannot be null");
@@ -102,7 +104,10 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
 
         interest.setStatus(InterestStatus.DECLINED);
         interest.setRespondedAt(LocalDateTime.now());
-        interestRepository.save(interest);
+        ExpressInterest updated = interestRepository.save(interest);
+
+        return mapper.toDTO(updated);
+
     }
 
     @Override
