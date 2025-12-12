@@ -107,7 +107,7 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         log.error("Each file must have a corresponding document name: {}", exception.getMessage());
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
                 webRequest.getDescription(false),
-                HttpStatus.INTERNAL_SERVER_ERROR,
+                HttpStatus.NOT_FOUND,
                 exception.getMessage(),
                 LocalDateTime.now()
         );
