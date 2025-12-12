@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 public class  PublicProfileDTO {
 
+    private Integer userId;
     private String firstName;
     private Date dateOfBirth;
 
@@ -17,9 +18,8 @@ public class  PublicProfileDTO {
     private Gender gender;
     private Double height;
     private String city;
-    private String nativeDistrict;
     private String education;
     private String occupation;
     private String caste;
-    private byte[] profilePhoto;
+    private String profilePhoto;
 }

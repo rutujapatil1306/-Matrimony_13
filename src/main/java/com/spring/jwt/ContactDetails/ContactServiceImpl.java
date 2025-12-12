@@ -1,6 +1,7 @@
 package com.spring.jwt.ContactDetails;
 
 import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
+import com.spring.jwt.HoroscopeDetails.HelperUtil;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.entity.User;
@@ -27,7 +28,7 @@ public class ContactServiceImpl implements ContactService {
     private final UserRepository userRepository;
 
     @Override
-    public BaseResponseDTO create(Integer userId, ContactDTO contactDTO) {
+    public BaseResponseDTO createContactDetails(Integer userId, ContactDTO contactDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
@@ -44,48 +45,15 @@ public class ContactServiceImpl implements ContactService {
         completeProfileRepository.save(completeProfile);
 
         BaseResponseDTO response = new BaseResponseDTO();
-        response.setCode("200");
-        response.setMessage("Contact Saved Successfully");
+        response.setCode("201");
+        response.setMessage("Contact details Saved Successfully");
         response.setID(saveContact.getContactId());
 
         return response;
     }
 
     @Override
-    public ApiResponse getByUserId(Integer userId) {
-
-        ContactDetails existingContact = contactRepository.findByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundExceptions(
-                        "No contact details found for userID: " + userId + ". Please register first."
-                ));
-
-        return ApiResponse.success(
-                "Contact details fetched successfully",
-                existingContact
-        );
-    }
-
-//
-//    @Override
-//    public ApiResponse getByUserId(Integer userId) {
-//
-//        ContactDetails existingContact = contactRepository.findByUserId(userId)
-//                .orElseThrow(() -> new UserNotFoundExceptions(
-//                        "No contact details found for userID: " + userId +
-//                                ". Please register first."
-//                ));
-//
-//
-//        ApiResponse response = new ApiResponse();
-////        response.setStatusCode(200);
-////        response.setMessage("Contact updated successfully");
-//        response.setData(existingContact);
-//
-//        return response;
-//    }
-
-    @Override
-    public ApiResponse updateByUserID(Integer userId, ContactDTO contactDTO) {
+    public ApiResponse getContactDetails(Integer userId) {
 
         ContactDetails existingContact = contactRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions(
@@ -93,13 +61,36 @@ public class ContactServiceImpl implements ContactService {
                                 ". Please register first."
                 ));
 
-        updateContact(existingContact, contactDTO);
+        ApiResponse response = new ApiResponse();
+        response.setStatusCode(200);
+        response.setMessage("Contact details retrieved successfully");
+        response.setData(existingContact);
+
+        return response;
+    }
+
+    @Transactional
+    @Override
+    public ApiResponse updateContactDetails(Integer userId, ContactDTO contactDTO) {
+
+        ContactDetails existingContact = contactRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundExceptions(
+                        "No contact details found for userID: " + userId +
+                                ". Please register first."
+                ));
+
+        HelperUtil.getDataIfNotNull(contactDTO::getFullAddress, existingContact::setFullAddress);
+        HelperUtil.getDataIfNotNull(contactDTO::getCity, existingContact::setCity);
+        HelperUtil.getDataIfNotNull(contactDTO::getPinCode, existingContact::setPinCode);
+        HelperUtil.getDataIfNotNull(contactDTO::getMobileNumber, existingContact::setMobileNumber);
+        HelperUtil.getDataIfNotNull(contactDTO::getAlternateNumber, existingContact::setAlternateNumber);
+
         ContactDetails savedContact = contactRepository.save(existingContact);
         ContactDTO responseDTO = ContactMapper.toDTO(savedContact);
 
         ApiResponse response = new ApiResponse();
         response.setStatusCode(200);
-        response.setMessage("Contact updated successfully");
+        response.setMessage("Contact details updated successfully");
         response.setData(responseDTO);
 
         return response;
@@ -107,41 +98,22 @@ public class ContactServiceImpl implements ContactService {
 
     @Transactional
     @Override
-    public BaseResponseDTO deleteByUserID(Integer userID) {
+    public BaseResponseDTO deleteContactDetails(Integer userID) {
         ContactDetails existingContact = contactRepository.findByUserId(userID)
                 .orElseThrow(() -> new UserNotFoundExceptions(
                         "No contact details found for userID: " + userID +
                                 ". Please register first."
                 ));
 
+
         contactRepository.deleteByUserId(userID);
 
         BaseResponseDTO response = new BaseResponseDTO();
         response.setCode("201");
-        response.setMessage("Contact Deleted Successfully");
+        response.setMessage("Contact details deleted Successfully");
 
 
         return response;
-    }
-
-    private ContactDetails updateContact(ContactDetails existingContact, ContactDTO contactDTO) {
-        if (contactDTO.getFullAddress() != null) {
-            existingContact.setFullAddress(contactDTO.getFullAddress());
-        }
-        if (contactDTO.getCity() != null) {
-            existingContact.setCity(contactDTO.getCity());
-        }
-        if (contactDTO.getPinCode() != null) {
-            existingContact.setPinCode(contactDTO.getPinCode());
-        }
-        if (contactDTO.getMobileNumber() != null) {
-            existingContact.setMobileNumber(contactDTO.getMobileNumber());
-        }
-        if (contactDTO.getAlternateNumber() != null) {
-            existingContact.setAlternateNumber(contactDTO.getAlternateNumber());
-        }
-
-        return existingContact;
     }
 
 

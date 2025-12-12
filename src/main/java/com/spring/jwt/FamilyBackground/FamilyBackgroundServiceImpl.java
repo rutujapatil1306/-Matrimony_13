@@ -1,6 +1,7 @@
 package com.spring.jwt.FamilyBackground;
 
 import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
+import com.spring.jwt.HoroscopeDetails.HelperUtil;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.FamilyBackground;
 import com.spring.jwt.entity.User;
@@ -59,42 +60,19 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService{
         FamilyBackground background = repository.findByUserId(userId)
                 .orElseThrow(() -> new FamilyBackgroundNotFoundException("Family Background not found"));
 
-        if (dto.getFatherOccupation() != null) {
-            background.setFatherOccupation(dto.getFatherOccupation());
-        }
-        if (dto.getMotherOccupation() != null) {
-            background.setMotherOccupation(dto.getMotherOccupation());
-        }
-        if (dto.getBrothers() != null) {
-            background.setBrother(dto.getBrothers());
-        }
-        if (dto.getMarriedBrothers() != null) {
-            background.setMarriedBrothers(dto.getMarriedBrothers());
-        }
-        if (dto.getSisters() != null) {
-            background.setSisters(dto.getSisters());
-        }
-        if (dto.getMarriedSisters() != null) {
-            background.setMarriedSisters(dto.getMarriedSisters());
-        }
-        if (dto.getInterCasteInFamily() != null) {
-            background.setInterCasteInFamily(dto.getInterCasteInFamily());
-        }
-        if (dto.getParentResiding() != null) {
-            background.setParentResiding(dto.getParentResiding());
-        }
-        if (dto.getMamaPlace() != null) {
-            background.setMamaPlace(dto.getMamaPlace());
-        }
-        if (dto.getMamaSurname() != null) {
-            background.setMamaSurname(dto.getMamaSurname());
-        }
-        if (dto.getFamilyBackgroundCol() != null) {
-            background.setFamilyBackgroundCol(dto.getFamilyBackgroundCol());
-        }
-        if (dto.getRelativeSurnames() != null) {
-            background.setRelativeSurnames(dto.getRelativeSurnames());
-        }
+        HelperUtil.getDataIfNotNull(dto::getFatherOccupation, background::setFatherOccupation);
+        HelperUtil.getDataIfNotNull(dto::getMotherOccupation, background::setMotherOccupation);
+        HelperUtil.getDataIfNotNull(dto::getBrothers, background::setBrother);
+        HelperUtil.getDataIfNotNull(dto::getMarriedBrothers, background::setMarriedBrothers);
+        HelperUtil.getDataIfNotNull(dto::getSisters, background::setSisters);
+        HelperUtil.getDataIfNotNull(dto::getMarriedSisters, background::setMarriedSisters);
+        HelperUtil.getDataIfNotNull(dto::getInterCasteInFamily, background::setInterCasteInFamily);
+        HelperUtil.getDataIfNotNull(dto::getParentResiding, background::setParentResiding);
+        HelperUtil.getDataIfNotNull(dto::getMamaPlace, background::setMamaPlace);
+        HelperUtil.getDataIfNotNull(dto::getMamaSurname, background::setMamaSurname);
+        HelperUtil.getDataIfNotNull(dto::getFamilyBackgroundCol, background::setFamilyBackgroundCol);
+        HelperUtil.getDataIfNotNull(dto::getRelativeSurnames, background::setRelativeSurnames);
+
         FamilyBackground savedBackground= repository.save(background);
         FamilyBackgroundDTO responseDTO = mapper.toDTO(savedBackground);
 

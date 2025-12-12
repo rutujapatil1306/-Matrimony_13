@@ -25,7 +25,7 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
     private final InterestMapper mapper;
 
     @Override
-    public void sendInterest(Integer fromUserId, Integer toUserId, String message) {
+    public void sendInterest(Integer fromUserId, Integer toUserId) {
 
         if (fromUserId.equals(toUserId)) {
             throw new IllegalArgumentException("You cannot send interest to yourself.");
@@ -54,7 +54,7 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
         interest.setToUser(toUser);
         interest.setStatus(InterestStatus.PENDING);
         interest.setCreatedAt(LocalDateTime.now());
-        interest.setMessage(message);
+        //interest.setMessage(message);
 
         interestRepository.save(interest);
     }
@@ -62,7 +62,14 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
 
 
     @Override
-    public void acceptInterest(Integer currentUserId, Long interestId) {
+    public InterestResponseDTO acceptInterest(Integer currentUserId, Long interestId) {
+
+        if (currentUserId == null) {
+            throw new IllegalArgumentException("Current user ID cannot be null");
+        }
+        if (interestId == null) {
+            throw new IllegalArgumentException("Interest ID cannot be null");
+        }
 
         ExpressInterest interest = interestRepository.findById(interestId)
                 .orElseThrow(() -> new InterestNotFoundException("Interest request not found"));
@@ -73,11 +80,20 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
 
         interest.setStatus(InterestStatus.ACCEPTED);
         interest.setRespondedAt(LocalDateTime.now());
-        interestRepository.save(interest);
+        ExpressInterest updated = interestRepository.save(interest);
+        return mapper.toDTO(updated);
+
     }
 
     @Override
-    public void declineInterest(Integer currentUserId, Long interestId) {
+    public InterestResponseDTO declineInterest(Integer currentUserId, Long interestId) {
+
+        if (currentUserId == null) {
+            throw new IllegalArgumentException("Current user ID cannot be null");
+        }
+        if (interestId == null) {
+            throw new IllegalArgumentException("Interest ID cannot be null");
+        }
 
         ExpressInterest interest = interestRepository.findById(interestId)
                 .orElseThrow(() -> new InterestNotFoundException("Interest request not found"));
@@ -88,38 +104,39 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
 
         interest.setStatus(InterestStatus.DECLINED);
         interest.setRespondedAt(LocalDateTime.now());
-        interestRepository.save(interest);
+        ExpressInterest updated = interestRepository.save(interest);
+
+        return mapper.toDTO(updated);
+
     }
 
     @Override
-    public Page<InterestResponseDTO> getReceivedInterests(Integer userId, Pageable pageable) {
+    public Page<InterestResponseDTO> getReceivedInterests(Integer userId, InterestStatus status, Pageable pageable) {
         Page<ExpressInterest> interests =
-                interestRepository.findByToUserIdAndStatus(userId, InterestStatus.PENDING, pageable);
+                interestRepository.findByToUserIdAndStatus(userId, status, pageable);
         return interests.map(mapper::toDTO);
     }
 
 
     @Override
-    public Page<InterestResponseDTO> getSentInterests(Integer userId, Pageable pageable) {
-
-        return interestRepository.findByFromUserId(userId, pageable)
-                .map(mapper::toDTO);
+    public Page<InterestResponseDTO> getSentInterests(Integer userId, InterestStatus status, Pageable pageable) {
+        Page<ExpressInterest> result =
+                interestRepository.findByFromUserIdAndStatus(userId, status, pageable);
+        return result.map(mapper::toDTO);
     }
-
-    @Override
-    public Page<InterestResponseDTO> getPendingReceived(Integer userId, Pageable pageable) {
-
-        Page<ExpressInterest> page = interestRepository.findByToUserIdAndStatus(userId, InterestStatus.PENDING, pageable);
-        return page.map(mapper::toDTO);
-    }
-
-    @Override
-    public Page<InterestResponseDTO> getPendingSent(Integer userId, Pageable pageable) {
-
-        Page<ExpressInterest> page = interestRepository.findByFromUserIdAndStatus(userId, InterestStatus.PENDING, pageable);
-        return page.map(mapper::toDTO);
-    }
-
-
+//
+//    @Override
+//    public Page<InterestResponseDTO> getPendingReceived(Integer userId, Pageable pageable) {
+//
+//        Page<ExpressInterest> page = interestRepository.findByToUserIdAndStatus(userId, InterestStatus.PENDING, pageable);
+//        return page.map(mapper::toDTO);
+//    }
+//
+//    @Override
+//    public Page<InterestResponseDTO> getPendingSent(Integer userId, Pageable pageable) {
+//
+//        Page<ExpressInterest> page = interestRepository.findByFromUserIdAndStatus(userId, InterestStatus.PENDING, pageable);
+//        return page.map(mapper::toDTO);
+//    }
 
 }

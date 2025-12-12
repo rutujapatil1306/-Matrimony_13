@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface DocumentRepository extends JpaRepository<Document,Integer> {
 
     Optional<Object> findByUserIdAndDocumentName(Integer userId, String documentName);
+
 }

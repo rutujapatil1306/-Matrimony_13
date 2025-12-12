@@ -21,7 +21,7 @@ public class CompleteProfileController {
 
     private final CompleteProfileService completeProfileService;
 
-    @GetMapping("/get")
+    @GetMapping("/getOwnProfile")
     public ResponseEntity<FullProfileDTO> getFullProfile() {
 
         Integer userId = SecurityUtil.getCurrentUserId();
@@ -33,7 +33,7 @@ public class CompleteProfileController {
         return completeProfileService.getDisplayProfile(userId);
     }
 
-    @GetMapping("/getProfile")
+    @GetMapping("/getProfileByGender")
     public Page<PublicProfileDTO> getProfile(
             @RequestParam(defaultValue = "0") @Min(value = 0, message = "Page number cannot be negative") int page,
             @RequestParam(defaultValue = "10") @Min(value = 1, message = "Page size must be at least 1")

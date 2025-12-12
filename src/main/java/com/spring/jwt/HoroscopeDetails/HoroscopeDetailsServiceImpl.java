@@ -61,6 +61,16 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService{
                 .orElseThrow(() -> new HoroscopeNotFoundException("Horoscope not found"));
 
         HelperUtil.getDataIfNotNull(dto::getBirthPlace, horoscope::setBirthPlace);
+        HelperUtil.getDataIfNotNull(dto::getCharan, horoscope::setCharan);
+        HelperUtil.getDataIfNotNull(dto::getGan, horoscope::setGan);
+        HelperUtil.getDataIfNotNull(dto::getGotra, horoscope::setGotra);
+        HelperUtil.getDataIfNotNull(dto::getDevak, horoscope::setDevak);
+        HelperUtil.getDataIfNotNull(dto::getMangal, horoscope::setMangal);
+        HelperUtil.getDataIfNotNull(dto::getNadi, horoscope::setNadi);
+        HelperUtil.getDataIfNotNull(dto::getNakshatra, horoscope::setNakshatra);
+        HelperUtil.getDataIfNotNull(dto::getRashi, horoscope::setRashi);
+        HelperUtil.getDataIfNotNull(dto::getTime, horoscope::setTime);
+        HelperUtil.getDataIfNotNull(dto::getDob, horoscope::setDob);
 
         HoroscopeDetails savedHoroscope = horoscopeDetailsRepository.save(horoscope);
         HoroscopeDTO responseDTO = horoscopeMapper.toDTO(savedHoroscope);

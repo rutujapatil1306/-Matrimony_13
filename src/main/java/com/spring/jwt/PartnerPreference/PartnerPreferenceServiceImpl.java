@@ -1,6 +1,7 @@
 package com.spring.jwt.PartnerPreference;
 
 import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
+import com.spring.jwt.HoroscopeDetails.HelperUtil;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.PartnerPreference;
 import com.spring.jwt.entity.User;
@@ -60,48 +61,20 @@ public class PartnerPreferenceServiceImpl implements PartnerPreferenceService{
         PartnerPreference partnerPreference = partnerPreferenceRepository.findByUserId(userId)
                 .orElseThrow(() -> new PartnerPreferenceNotFoundException("partner preference not found for userId : "+ userId));
 
-        if (dto.getPartnerAge() != null) {
-            partnerPreference.setAge(dto.getPartnerAge());
-        }
-        if (dto.getPartnerCaste() != null) {
-            partnerPreference.setCaste(dto.getPartnerCaste());
-        }
-        if (dto.getLookingFor() != null) {
-            partnerPreference.setLookingFor(dto.getLookingFor());
-        }
-        if (dto.getPartnerHeight() != null) {
-            partnerPreference.setHeight(dto.getPartnerHeight());
-        }
-        if (dto.getEatingHabits() != null) {
-            partnerPreference.setEatingHabits(dto.getEatingHabits());
-        }
-        if (dto.getCountryLivingIn() != null) {
-            partnerPreference.setCountryLivingIn(dto.getCountryLivingIn());
-        }
-        if (dto.getCityLivingIn() != null) {
-            partnerPreference.setCityLivingIn(dto.getCityLivingIn());
-        }
-        if (dto.getPartnerComplexion() != null) {
-            partnerPreference.setComplexion(dto.getPartnerComplexion());
-        }
-        if (dto.getPartnerReligion() != null) {
-            partnerPreference.setReligion(dto.getPartnerReligion());
-        }
-        if (dto.getPartnerEducation() != null) {
-            partnerPreference.setEducation(dto.getPartnerEducation());
-        }
-        if (dto.getMangal() != null) {
-            partnerPreference.setMangal(dto.getMangal());
-        }
-        if (dto.getPartnerResidentStatus() != null) {
-            partnerPreference.setResidentStatus(dto.getPartnerResidentStatus());
-        }
-        if (dto.getPartnerOccupation() != null) {
-            partnerPreference.setPartnerOccupation(dto.getPartnerOccupation());
-        }
-        if (dto.getPartnerIncome() != null) {
-            partnerPreference.setPartnerIncome(dto.getPartnerIncome());
-        }
+        HelperUtil.getDataIfNotNull(dto::getPartnerAge, partnerPreference::setAge);
+        HelperUtil.getDataIfNotNull(dto::getPartnerCaste, partnerPreference::setCaste);
+        HelperUtil.getDataIfNotNull(dto::getLookingFor, partnerPreference::setLookingFor);
+        HelperUtil.getDataIfNotNull(dto::getPartnerHeight, partnerPreference::setHeight);
+        HelperUtil.getDataIfNotNull(dto::getEatingHabits, partnerPreference::setEatingHabits);
+        HelperUtil.getDataIfNotNull(dto::getCountryLivingIn, partnerPreference::setCountryLivingIn);
+        HelperUtil.getDataIfNotNull(dto::getCityLivingIn, partnerPreference::setCityLivingIn);
+        HelperUtil.getDataIfNotNull(dto::getPartnerComplexion, partnerPreference::setComplexion);
+        HelperUtil.getDataIfNotNull(dto::getPartnerReligion, partnerPreference::setReligion);
+        HelperUtil.getDataIfNotNull(dto::getPartnerEducation, partnerPreference::setEducation);
+        HelperUtil.getDataIfNotNull(dto::getMangal, partnerPreference::setMangal);
+        HelperUtil.getDataIfNotNull(dto::getPartnerResidentStatus, partnerPreference::setResidentStatus);
+        HelperUtil.getDataIfNotNull(dto::getPartnerOccupation, partnerPreference::setPartnerOccupation);
+        HelperUtil.getDataIfNotNull(dto::getPartnerIncome, partnerPreference::setPartnerIncome);
 
         PartnerPreference savedPreference = partnerPreferenceRepository.save(partnerPreference);
         PartnerPreferenceDTO responseDTO= mapper.toDTO(savedPreference);
