@@ -6,6 +6,7 @@ import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.FamilyBackground;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.FamilyBackgroundNotFoundException;
+import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
@@ -46,19 +47,18 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService{
         return response;
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public FamilyBackgroundDTO getBackground(Integer userId) {
         return repository.findByUserId(userId).map(mapper::toDTO)
-                .orElseThrow(()-> new FamilyBackgroundNotFoundException("Family Background Not Found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Family Background Not Found"));
     }
 
     @Override
     @Transactional
     public ApiResponse updateBackground(Integer userId, FamilyBackgroundDTO dto) {
         FamilyBackground background = repository.findByUserId(userId)
-                .orElseThrow(() -> new FamilyBackgroundNotFoundException("Family Background not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Family Background not found"));
 
         HelperUtil.getDataIfNotNull(dto::getFatherOccupation, background::setFatherOccupation);
         HelperUtil.getDataIfNotNull(dto::getMotherOccupation, background::setMotherOccupation);

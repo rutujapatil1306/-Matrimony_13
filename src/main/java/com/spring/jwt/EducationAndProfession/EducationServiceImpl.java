@@ -6,6 +6,7 @@ import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.EducationNotFoundException;
+import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
@@ -51,9 +52,7 @@ public class EducationServiceImpl implements EducationService {
     public ApiResponse updateEducationAndProfession(Integer userID, EducationDTO educationDTO) {
 
         EducationAndProfession existing = educationRepository.findByUserId(userID)
-                .orElseThrow(() -> new UserNotFoundExceptions(
-                        "No contact details found for userID: " + userID +
-                                ". Please register first."));
+                .orElseThrow(() -> new ResourceNotFoundException("Education and profession details not found"));
 
         HelperUtil.getDataIfNotNull(educationDTO::getEducation, existing::setEducation);
         HelperUtil.getDataIfNotNull(educationDTO::getDegree, existing::setDegree);
@@ -77,8 +76,8 @@ public class EducationServiceImpl implements EducationService {
     @Override
     public EducationDTO getEducationAndProfession(Integer userId) {
         return educationRepository.findByUserId(userId).map(mapper::toDTO)
-                .orElseThrow(()-> new EducationNotFoundException
-                        ("education and profession details not found for userId :"+ userId));
+                .orElseThrow(()-> new ResourceNotFoundException
+                        ("education and profession details not found for userId"));
     }
 
 }

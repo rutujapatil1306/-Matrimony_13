@@ -51,7 +51,7 @@ public class FamilyBackgroundController {
             @RequestBody @Valid FamilyBackgroundDTO dto){
 
         Integer userId = SecurityUtil.getCurrentUserId();
-        service.updateBackground(userId,dto);
+         service.updateBackground(userId, dto);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

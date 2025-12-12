@@ -57,4 +57,15 @@ public class HoroscopeDetailsController {
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success("Horoscope details Updated Successfully !"));
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<BaseResponseDTO> deleteHoroscope(){
+
+        Integer userId = SecurityUtil.getCurrentUserId();
+        BaseResponseDTO response = horoscopeDetailsService.deleteHoroscope(userId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 }

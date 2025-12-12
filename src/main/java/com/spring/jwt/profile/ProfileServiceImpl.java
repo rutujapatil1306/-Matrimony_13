@@ -6,10 +6,7 @@ import com.spring.jwt.HoroscopeDetails.HelperUtil;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserProfile;
-import com.spring.jwt.exception.BaseException;
-import com.spring.jwt.exception.ProfileNotFoundException;
-import com.spring.jwt.exception.UserAlreadyExistException;
-import com.spring.jwt.exception.UserNotFoundExceptions;
+import com.spring.jwt.exception.*;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
@@ -38,9 +35,9 @@ public class ProfileServiceImpl implements ProfileService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
-        profileRepository.findByMobileNumber(dto.getMobileNumber())
+        profileRepository.findByMobileNumberOrEmail(dto.getMobileNumber(), dto.getEmail())
                 .ifPresent(p -> {
-                    throw new BaseException("400", "Mobile Number is already registered !!");
+                    throw new UserAlreadyExistException("Mobile Number or Email is already registered!");
                 });
 
         UserProfile entity = profileMapper.toEntity(dto);
@@ -62,7 +59,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public ApiResponse updateProfile(Integer userId, ProfileDTO dto) {
         UserProfile profile= profileRepository.findByUserId(userId)
-                .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
 
         HelperUtil.getDataIfNotNull(dto::getFirstName, profile::setFirstName);
         HelperUtil.getDataIfNotNull(dto::getLastName, profile::setLastName);
@@ -95,6 +92,7 @@ public class ProfileServiceImpl implements ProfileService {
         ApiResponse response = new ApiResponse();
         response.setStatusCode(200);
         response.setMessage("Profile updated successfully");
+        response.setData(response);
 
         return response;
     }
@@ -104,8 +102,23 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(readOnly = true)
     public ProfileDTO getProfile(Integer userId) {
         return profileRepository.findByUserId(userId).map(profileMapper::toDTO)
-                .orElseThrow(() -> new ProfileNotFoundException("profile not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("profile details not found"));
 
     }
 
+    @Transactional
+    @Override
+    public BaseResponseDTO deleteProfile(Integer userID) {
+
+        UserProfile userProfile = profileRepository.findByUserId(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile details not found"));
+
+        profileRepository.delete(userProfile);
+
+        BaseResponseDTO response = new BaseResponseDTO();
+        response.setCode("201");
+        response.setMessage("profile details deleted Successfully");
+
+        return response;
+    }
 }
