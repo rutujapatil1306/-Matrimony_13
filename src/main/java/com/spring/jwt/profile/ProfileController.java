@@ -55,5 +55,15 @@ public class ProfileController {
                 .body(ApiResponse.success("Profile details for user id :"+ userId, response));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<BaseResponseDTO> deleteProfile(){
+
+        Integer userId = SecurityUtil.getCurrentUserId();
+        BaseResponseDTO response = profileService.deleteProfile(userId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 }
 

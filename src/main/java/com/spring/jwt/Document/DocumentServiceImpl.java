@@ -47,7 +47,7 @@ public class DocumentServiceImpl implements DocumentService {
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
         if (files == null || files.isEmpty()) {
-            throw new DocumentNotFoundException("Please upload at least one file");
+            throw new IllegalArgumentException("Please upload at least one file");
         }
 
         if (documentName.size() != files.size()) {

@@ -55,4 +55,15 @@ public class PartnerPreferenceController {
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success("Partner preference Updated Successfully !"));
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<BaseResponseDTO> deletePreference(){
+
+        Integer userId = SecurityUtil.getCurrentUserId();
+        BaseResponseDTO response = partnerPreferenceService.deletePreference(userId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 }

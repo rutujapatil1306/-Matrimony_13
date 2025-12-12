@@ -38,7 +38,7 @@ public class EducationController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(response);
+                .body(ApiResponse.success("Education details updated successfully"));
     }
 
     @GetMapping("/get")

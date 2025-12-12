@@ -5,7 +5,7 @@ import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.HoroscopeDetails;
 import com.spring.jwt.entity.User;
-import com.spring.jwt.exception.HoroscopeNotFoundException;
+import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
@@ -51,14 +51,14 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService{
     @Transactional(readOnly = true)
     public HoroscopeDTO getHoroscopeById(Integer userId) {
         return horoscopeDetailsRepository.findByUserId(userId).map(horoscopeMapper::toDTO)
-                .orElseThrow(()-> new HoroscopeNotFoundException("horoscope not found with id :"+ userId));
+                .orElseThrow(()-> new ResourceNotFoundException("horoscope not found with id :"+ userId));
     }
 
     @Override
     @Transactional
     public ApiResponse updateHoroscope(Integer userId, HoroscopeDTO dto){
         HoroscopeDetails horoscope = horoscopeDetailsRepository.findByUserId(userId)
-                .orElseThrow(() -> new HoroscopeNotFoundException("Horoscope not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Horoscope not found"));
 
         HelperUtil.getDataIfNotNull(dto::getBirthPlace, horoscope::setBirthPlace);
         HelperUtil.getDataIfNotNull(dto::getCharan, horoscope::setCharan);
@@ -82,9 +82,20 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService{
 
         return response;
     }
-//
-//    @Override
-//    public void deleteHoroscope(Integer userId) {
-//        horoscopeDetailsRepository.deleteById(userId);
 
+    @Transactional
+    @Override
+    public BaseResponseDTO deleteHoroscope(Integer userID) {
+
+        HoroscopeDetails horoscope = horoscopeDetailsRepository.findByUserId(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("Partner preference details not found"));
+
+        horoscopeDetailsRepository.delete(horoscope);
+
+        BaseResponseDTO response = new BaseResponseDTO();
+        response.setCode("200");
+        response.setMessage("preference details deleted Successfully");
+
+        return response;
+    }
 }

@@ -5,7 +5,9 @@ import com.spring.jwt.HoroscopeDetails.HelperUtil;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.PartnerPreference;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.entity.UserProfile;
 import com.spring.jwt.exception.PartnerPreferenceNotFoundException;
+import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
@@ -52,14 +54,14 @@ public class PartnerPreferenceServiceImpl implements PartnerPreferenceService{
     @Transactional(readOnly = true)
     public PartnerPreferenceDTO getPreference(Integer userId) {
         return partnerPreferenceRepository.findByUserId(userId).map(mapper::toDTO)
-                .orElseThrow(()-> new PartnerPreferenceNotFoundException("partner preference not found for userId : "+ userId));
+                .orElseThrow(()-> new ResourceNotFoundException("partner preference not found for userId : "+ userId));
     }
 
     @Override
     @Transactional
     public ApiResponse updatePreference(Integer userId, PartnerPreferenceDTO dto) {
         PartnerPreference partnerPreference = partnerPreferenceRepository.findByUserId(userId)
-                .orElseThrow(() -> new PartnerPreferenceNotFoundException("partner preference not found for userId : "+ userId));
+                .orElseThrow(() -> new ResourceNotFoundException("partner preference not found for userId : "+ userId));
 
         HelperUtil.getDataIfNotNull(dto::getPartnerAge, partnerPreference::setAge);
         HelperUtil.getDataIfNotNull(dto::getPartnerCaste, partnerPreference::setCaste);
@@ -83,6 +85,22 @@ public class PartnerPreferenceServiceImpl implements PartnerPreferenceService{
         response.setStatusCode(200);
         response.setMessage("Partner preference updated successfully");
         response.setData(responseDTO);
+
+        return response;
+    }
+
+    @Transactional
+    @Override
+    public BaseResponseDTO deletePreference(Integer userID) {
+
+        PartnerPreference preference = partnerPreferenceRepository.findByUserId(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("Partner preference details not found"));
+
+        partnerPreferenceRepository.delete(preference);
+
+        BaseResponseDTO response = new BaseResponseDTO();
+        response.setCode("200");
+        response.setMessage("preference details deleted Successfully");
 
         return response;
     }

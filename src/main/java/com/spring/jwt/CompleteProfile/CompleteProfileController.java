@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CompleteProfileController {
 
-    private final CompleteProfileService completeProfileService;
+    private final CompleteProfileServiceImpl completeProfileService;
 
     @GetMapping("/getOwnProfile")
     public ResponseEntity<FullProfileDTO> getFullProfile() {
@@ -42,6 +42,6 @@ public class CompleteProfileController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("completeProfileId").descending());
 
-        return completeProfileService.getProfile(pageable, gender);
+        return completeProfileService.getProfileByGender(pageable, gender);
     }
 }

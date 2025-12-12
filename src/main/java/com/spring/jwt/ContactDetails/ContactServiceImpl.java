@@ -7,6 +7,7 @@ import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserProfile;
 import com.spring.jwt.exception.ContactNotFoundException;
+import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.exception.UserAlreadyExistException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
@@ -56,10 +57,7 @@ public class ContactServiceImpl implements ContactService {
     public ApiResponse getContactDetails(Integer userId) {
 
         ContactDetails existingContact = contactRepository.findByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundExceptions(
-                        "No contact details found for userID: " + userId +
-                                ". Please register first."
-                ));
+                .orElseThrow(() -> new ResourceNotFoundException("Contact Details not found"));
 
         ApiResponse response = new ApiResponse();
         response.setStatusCode(200);
@@ -74,10 +72,7 @@ public class ContactServiceImpl implements ContactService {
     public ApiResponse updateContactDetails(Integer userId, ContactDTO contactDTO) {
 
         ContactDetails existingContact = contactRepository.findByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundExceptions(
-                        "No contact details found for userID: " + userId +
-                                ". Please register first."
-                ));
+                .orElseThrow(() -> new ResourceNotFoundException("Contact details not found"));
 
         HelperUtil.getDataIfNotNull(contactDTO::getFullAddress, existingContact::setFullAddress);
         HelperUtil.getDataIfNotNull(contactDTO::getCity, existingContact::setCity);
@@ -99,19 +94,15 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     @Override
     public BaseResponseDTO deleteContactDetails(Integer userID) {
-        ContactDetails existingContact = contactRepository.findByUserId(userID)
-                .orElseThrow(() -> new UserNotFoundExceptions(
-                        "No contact details found for userID: " + userID +
-                                ". Please register first."
-                ));
 
+        ContactDetails contactDetails = contactRepository.findByUserId(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("Contact details not found"));
 
-        contactRepository.deleteByUserId(userID);
+        contactRepository.delete(contactDetails);
 
         BaseResponseDTO response = new BaseResponseDTO();
         response.setCode("201");
         response.setMessage("Contact details deleted Successfully");
-
 
         return response;
     }

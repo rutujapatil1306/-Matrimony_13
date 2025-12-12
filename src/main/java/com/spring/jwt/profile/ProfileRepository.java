@@ -2,6 +2,7 @@ package com.spring.jwt.profile;
 
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserProfile;
+import com.spring.jwt.utils.BaseResponseDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,8 +15,9 @@ import java.util.Optional;
 @Repository
 public interface ProfileRepository extends JpaRepository<UserProfile, Integer> {
 
+
     @Query("SELECT p FROM UserProfile p WHERE p.user.id = :userId")
     Optional<UserProfile> findByUserId(@Param("userId") Integer userId);
+    Optional<UserProfile> findByMobileNumberOrEmail(String mobileNumber, String email);
 
-    Optional<UserProfile> findByMobileNumber(@Param("mobileNumber") String mobileNumber);
 }

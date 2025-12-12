@@ -8,4 +8,5 @@ public interface PartnerPreferenceService {
     BaseResponseDTO createPreference(Integer userId, PartnerPreferenceDTO partnerPreferenceDTO);
     PartnerPreferenceDTO getPreference(Integer userId);
     ApiResponse updatePreference(Integer userId, PartnerPreferenceDTO partnerPreferenceDTO);
+    BaseResponseDTO deletePreference(Integer userId);
 }

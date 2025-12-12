@@ -24,8 +24,6 @@ public class PublicProfileMapper {
         dto.setCaste(profile.getUserProfile().getCaste());
         dto.setOccupation(profile.getEducationAndProfession().getOccupation());
 
-
-
         return dto;
     }
 }
