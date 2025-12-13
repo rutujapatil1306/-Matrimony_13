@@ -52,6 +52,17 @@ public class EducationController {
                 .body(ApiResponse.success("Education and profession details For userId " + userId, educationAndProfession));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<BaseResponseDTO> deleteEducationDetails(){
+
+        Integer userId = SecurityUtil.getCurrentUserId();
+        BaseResponseDTO response = educationAndProfessionService.deleteEducationDetails(userId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
 }
 
 

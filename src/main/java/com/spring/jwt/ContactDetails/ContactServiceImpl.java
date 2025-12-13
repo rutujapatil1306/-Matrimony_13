@@ -101,7 +101,7 @@ public class ContactServiceImpl implements ContactService {
         contactRepository.delete(contactDetails);
 
         BaseResponseDTO response = new BaseResponseDTO();
-        response.setCode("201");
+        response.setCode("200");
         response.setMessage("Contact details deleted Successfully");
 
         return response;

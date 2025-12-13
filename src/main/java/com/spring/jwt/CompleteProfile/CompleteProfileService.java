@@ -9,8 +9,7 @@ import org.springframework.data.domain.Pageable;
 public interface CompleteProfileService {
 
     FullProfileDTO getFullProfile(Integer userId);
-    DisplayProfileDTO getDisplayProfile(Integer userId);
+    FullProfileDTO getDisplayProfile(Integer userId);
     Page<PublicProfileDTO> getProfileByGender(Pageable pageable, Gender gender);
-
 
     }

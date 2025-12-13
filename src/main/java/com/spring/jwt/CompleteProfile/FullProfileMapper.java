@@ -44,27 +44,21 @@ public class FullProfileMapper {
             if (cp.getUserProfile() != null) {
                 dto.setProfileDTO(profileMapper.toDTO(cp.getUserProfile()));
             }
-
             if (cp.getEducationAndProfession() != null) {
                 dto.setEducationDTO(educationMapper.toDTO(cp.getEducationAndProfession()));
             }
-
             if (cp.getHoroscopeDetails() != null) {
                 dto.setHoroscopeDTO(horoscopeMapper.toDTO(cp.getHoroscopeDetails()));
             }
-
             if (cp.getFamilyBackground() != null) {
                 dto.setFamilyBackgroundDTO(familyBackgroundMapper.toDTO(cp.getFamilyBackground()));
             }
-
             if (cp.getPartnerPreference() != null) {
                 dto.setPartnerPreferenceDTO(partnerPreferenceMapper.toDTO(cp.getPartnerPreference()));
             }
-
             if (cp.getContactDetails() != null) {
                 dto.setContactDTO(contactMapper.toDTO(cp.getContactDetails()));
             }
-
             return dto;
         }
     }
