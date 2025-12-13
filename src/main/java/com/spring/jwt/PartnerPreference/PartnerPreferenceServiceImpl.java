@@ -6,6 +6,7 @@ import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.PartnerPreference;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserProfile;
+import com.spring.jwt.exception.DuplicateResourceException;
 import com.spring.jwt.exception.PartnerPreferenceNotFoundException;
 import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
@@ -32,6 +33,12 @@ public class PartnerPreferenceServiceImpl implements PartnerPreferenceService{
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
+
+        if (partnerPreferenceRepository.existsByUserId(userId)) {
+            throw new DuplicateResourceException(
+                    "Partner Preference details already exist for this user"
+            );
+        }
 
         PartnerPreference savePartner = mapper.toEntity(partnerPreferenceDTO);
         savePartner.setUser(user);

@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface PartnerPreferenceRepository extends JpaRepository<PartnerPreference,Integer> {
 
     Optional<PartnerPreference> findByUserId(Integer userId);
+
+    boolean existsByUserId(Integer userId);
 }

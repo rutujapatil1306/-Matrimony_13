@@ -6,6 +6,7 @@ import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.entity.FamilyBackground;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.exception.DuplicateResourceException;
 import com.spring.jwt.exception.FamilyBackgroundNotFoundException;
 import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
@@ -22,7 +23,7 @@ import static java.nio.file.Files.delete;
 @RequiredArgsConstructor
 public class FamilyBackgroundServiceImpl implements FamilyBackgroundService{
 
-    private final FamilyBackgroundRepository repository;
+    private final FamilyBackgroundRepository familyBackgroundRepository;
     private final UserRepository userRepository;
     private final FamilyBackgroundMapper mapper;
     private final CompleteProfileRepository completeProfileRepository;
@@ -34,18 +35,24 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService{
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
-        FamilyBackground entity = mapper.toEntity(dto);
-        entity.setUser(user);
-        repository.save(entity);
+        if (familyBackgroundRepository.existsByUserId(userId)) {
+            throw new DuplicateResourceException(
+                    "Family Background details already exist for this user"
+            );
+        }
+
+        FamilyBackground familyBackground = mapper.toEntity(dto);
+        familyBackground.setUser(user);
+        familyBackgroundRepository.save(familyBackground);
 
         CompleteProfile completeProfile = completeProfileRepository.findByUserId(userId);
-        completeProfile.setFamilyBackground(entity);
+        completeProfile.setFamilyBackground(familyBackground);
         completeProfileRepository.save(completeProfile);
 
         BaseResponseDTO response = new BaseResponseDTO();
         response.setCode("201");
         response.setMessage("FamilyBackground saved successfully");
-        response.setID(entity.getFamilyBackgroundId());
+        response.setID(familyBackground.getFamilyBackgroundId());
 
         return response;
     }
@@ -53,14 +60,14 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService{
     @Override
     @Transactional(readOnly = true)
     public FamilyBackgroundDTO getBackground(Integer userId) {
-        return repository.findByUserId(userId).map(mapper::toDTO)
+        return familyBackgroundRepository.findByUserId(userId).map(mapper::toDTO)
                 .orElseThrow(()-> new ResourceNotFoundException("Family Background Not Found"));
     }
 
     @Override
     @Transactional
     public ApiResponse updateBackground(Integer userId, FamilyBackgroundDTO dto) {
-        FamilyBackground background = repository.findByUserId(userId)
+        FamilyBackground background = familyBackgroundRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Family Background not found"));
 
         HelperUtil.getDataIfNotNull(dto::getFatherOccupation, background::setFatherOccupation);
@@ -76,7 +83,7 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService{
         HelperUtil.getDataIfNotNull(dto::getFamilyBackgroundCol, background::setFamilyBackgroundCol);
         HelperUtil.getDataIfNotNull(dto::getRelativeSurnames, background::setRelativeSurnames);
 
-        FamilyBackground savedBackground= repository.save(background);
+        FamilyBackground savedBackground= familyBackgroundRepository.save(background);
         FamilyBackgroundDTO responseDTO = mapper.toDTO(savedBackground);
 
         ApiResponse response = new ApiResponse();
@@ -91,10 +98,11 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService{
     @Override
     public BaseResponseDTO deleteFamilyDetails(Integer userID) {
 
-        FamilyBackground background = repository.findByUserId(userID)
+        FamilyBackground background = familyBackgroundRepository.findByUserId(userID)
                 .orElseThrow(() -> new ResourceNotFoundException("Family details not found"));
 
-        repository.delete(background);
+
+        familyBackgroundRepository.delete(background);
 
         BaseResponseDTO response = new BaseResponseDTO();
         response.setCode("200");

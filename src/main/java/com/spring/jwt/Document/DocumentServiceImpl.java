@@ -10,10 +10,7 @@ import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.Document;
 import com.spring.jwt.entity.User;
-import com.spring.jwt.exception.BaseException;
-import com.spring.jwt.exception.DocumentNotFoundException;
-import com.spring.jwt.exception.MissingDocumentNameException;
-import com.spring.jwt.exception.UserNotFoundExceptions;
+import com.spring.jwt.exception.*;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
@@ -45,6 +42,12 @@ public class DocumentServiceImpl implements DocumentService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
+
+        if (documentRepository.existsByUserId(userId)) {
+            throw new DuplicateResourceException(
+                    "Documents already exist for this user"
+            );
+        }
 
         if (files == null || files.isEmpty()) {
             throw new IllegalArgumentException("Please upload at least one file");

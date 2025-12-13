@@ -5,6 +5,7 @@ import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.HoroscopeDetails;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.exception.DuplicateResourceException;
 import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
@@ -30,6 +31,12 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService{
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
+
+        if (horoscopeDetailsRepository.existsByUserId(userId)) {
+            throw new DuplicateResourceException(
+                    "Horoscope details already exist for this user"
+            );
+        }
 
         HoroscopeDetails entity = horoscopeMapper.toEntity(dto);
         entity.setUser(user);
