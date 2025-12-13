@@ -48,7 +48,7 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         try {
             status = HttpStatus.valueOf(Integer.parseInt(e.getCode()));
         } catch (Exception ex) {
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            status = HttpStatus.BAD_REQUEST;
         }
 
         return new ResponseEntity<>(response, status);
@@ -87,7 +87,7 @@ public class GlobalException extends ResponseEntityExceptionHandler {
                 exception.getMessage(),
                 LocalDateTime.now()
         );
-        return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(PageNotFoundException.class)
@@ -148,6 +148,18 @@ public class GlobalException extends ResponseEntityExceptionHandler {
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ErrorResponseDto> handleDuplicateResourceException(DuplicateResourceException exception ,WebRequest webRequest){
+        log.error("Education Details not found: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.CONFLICT,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(ProfileNotFoundException.class)
