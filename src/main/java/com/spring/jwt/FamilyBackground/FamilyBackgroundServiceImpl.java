@@ -3,6 +3,7 @@ package com.spring.jwt.FamilyBackground;
 import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
 import com.spring.jwt.HoroscopeDetails.HelperUtil;
 import com.spring.jwt.entity.CompleteProfile;
+import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.entity.FamilyBackground;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.FamilyBackgroundNotFoundException;
@@ -14,6 +15,8 @@ import com.spring.jwt.utils.BaseResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static java.nio.file.Files.delete;
 
 @Service
 @RequiredArgsConstructor
@@ -80,6 +83,22 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService{
         response.setStatusCode(200);
         response.setMessage("Family background details updated successfully");
         response.setData(responseDTO);
+
+        return response;
+    }
+
+    @Transactional
+    @Override
+    public BaseResponseDTO deleteFamilyDetails(Integer userID) {
+
+        FamilyBackground background = repository.findByUserId(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("Family details not found"));
+
+        repository.delete(background);
+
+        BaseResponseDTO response = new BaseResponseDTO();
+        response.setCode("200");
+        response.setMessage("Family details deleted Successfully");
 
         return response;
     }

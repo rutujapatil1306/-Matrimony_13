@@ -9,4 +9,5 @@ public interface FamilyBackgroundService {
     BaseResponseDTO saveFamilyBackground(Integer userId, FamilyBackgroundDTO dto);
     FamilyBackgroundDTO getBackground(Integer userId);
     ApiResponse updateBackground(Integer userId, FamilyBackgroundDTO dto);
+    BaseResponseDTO deleteFamilyDetails(Integer userID);
 }

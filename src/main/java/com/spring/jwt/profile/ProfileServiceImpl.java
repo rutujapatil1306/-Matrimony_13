@@ -116,7 +116,7 @@ public class ProfileServiceImpl implements ProfileService {
         profileRepository.delete(userProfile);
 
         BaseResponseDTO response = new BaseResponseDTO();
-        response.setCode("201");
+        response.setCode("200");
         response.setMessage("profile details deleted Successfully");
 
         return response;

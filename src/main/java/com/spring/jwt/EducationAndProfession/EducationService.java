@@ -12,4 +12,6 @@ public interface EducationService {
 
     EducationDTO getEducationAndProfession(Integer userId);
 
-}
+    BaseResponseDTO deleteEducationDetails(Integer userID);
+
+    }
