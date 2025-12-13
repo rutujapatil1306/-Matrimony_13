@@ -4,11 +4,10 @@ import com.spring.jwt.entity.ExpressInterest;
 import com.spring.jwt.Enums.Gender;
 import com.spring.jwt.Enums.InterestStatus;
 import com.spring.jwt.entity.User;
-import com.spring.jwt.exception.InterestAlreadySentException;
-import com.spring.jwt.exception.InterestNotFoundException;
-import com.spring.jwt.exception.UserNotFoundExceptions;
+import com.spring.jwt.exception.*;
 import com.spring.jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -28,7 +27,7 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
     public void sendInterest(Integer fromUserId, Integer toUserId) {
 
         if (fromUserId.equals(toUserId)) {
-            throw new IllegalArgumentException("You cannot send interest to yourself.");
+            throw new InvalidOperationException("You cannot send interest to yourself.");
         }
 
         User fromUser = userRepository.findById(fromUserId)
@@ -41,7 +40,7 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
         Gender receiverGender = toUser.getGender();
 
         if (senderGender == receiverGender) {
-            throw new IllegalStateException("You can send interest only to opposite gender.");
+            throw new InvalidOperationException("You can send interest only to opposite gender.");
         }
 
         boolean exists = interestRepository.existsByFromUserIdAndToUserId(fromUserId, toUserId);
@@ -89,10 +88,10 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
     public InterestResponseDTO declineInterest(Integer currentUserId, Long interestId) {
 
         if (currentUserId == null) {
-            throw new IllegalArgumentException("Current user ID cannot be null");
+            throw new MissingParameterException("Current user ID cannot be null");
         }
         if (interestId == null) {
-            throw new IllegalArgumentException("Interest ID cannot be null");
+            throw new MissingParameterException("Interest ID cannot be null");
         }
 
         ExpressInterest interest = interestRepository.findById(interestId)
