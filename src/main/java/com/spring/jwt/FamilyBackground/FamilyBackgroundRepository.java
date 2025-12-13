@@ -12,4 +12,6 @@ public interface FamilyBackgroundRepository extends JpaRepository<FamilyBackgrou
 
     @Query("SELECT p FROM FamilyBackground p WHERE p.user.id = :userId")
     Optional<FamilyBackground> findByUserId(@Param("userId") Integer userId);
+
+    boolean existsByUserId(Integer userId);
 }

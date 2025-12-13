@@ -35,6 +35,13 @@ public class ProfileServiceImpl implements ProfileService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
+        if (profileRepository.existsByUserId(userId)) {
+            throw new DuplicateResourceException(
+                    "Profile details already exist for this user"
+            );
+        }
+
+
         profileRepository.findByMobileNumberOrEmail(dto.getMobileNumber(), dto.getEmail())
                 .ifPresent(p -> {
                     throw new UserAlreadyExistException("Mobile Number or Email is already registered!");

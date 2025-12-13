@@ -11,4 +11,5 @@ public interface DocumentRepository extends JpaRepository<Document,Integer> {
 
     Optional<Object> findByUserIdAndDocumentName(Integer userId, String documentName);
 
+    boolean existsByUserId(Integer userId);
 }

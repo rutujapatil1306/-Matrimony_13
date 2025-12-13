@@ -20,4 +20,5 @@ public interface ProfileRepository extends JpaRepository<UserProfile, Integer> {
     Optional<UserProfile> findByUserId(@Param("userId") Integer userId);
     Optional<UserProfile> findByMobileNumberOrEmail(String mobileNumber, String email);
 
+    boolean existsByUserId(Integer userId);
 }

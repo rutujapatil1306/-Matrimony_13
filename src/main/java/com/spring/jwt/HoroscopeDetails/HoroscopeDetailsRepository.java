@@ -13,4 +13,6 @@ public interface HoroscopeDetailsRepository extends JpaRepository<HoroscopeDetai
 
     @Query("SELECT p FROM HoroscopeDetails p WHERE p.user.id = :userId")
     Optional<HoroscopeDetails> findByUserId(@Param("userId") Integer userId);
+
+    boolean existsByUserId(Integer userId);
 }
