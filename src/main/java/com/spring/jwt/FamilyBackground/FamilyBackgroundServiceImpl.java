@@ -98,10 +98,11 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService{
     @Override
     public BaseResponseDTO deleteFamilyDetails(Integer userID) {
 
-        FamilyBackground background = repository.findByUserId(userID)
+        FamilyBackground background = familyBackgroundRepository.findByUserId(userID)
                 .orElseThrow(() -> new ResourceNotFoundException("Family details not found"));
 
-        repository.delete(background);
+
+        familyBackgroundRepository.delete(background);
 
         BaseResponseDTO response = new BaseResponseDTO();
         response.setCode("200");
