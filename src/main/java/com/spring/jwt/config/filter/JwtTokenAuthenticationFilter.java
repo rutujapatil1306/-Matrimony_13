@@ -111,7 +111,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-
         private boolean isPublic(HttpServletRequest request) {
         String path = request.getRequestURI();
         // Minimal allowlist to avoid interfering with public endpoints
