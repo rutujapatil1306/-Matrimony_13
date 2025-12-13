@@ -1,5 +1,8 @@
 package com.spring.jwt.CompleteProfile;
 
+import com.spring.jwt.ContactDetails.ContactDTO;
+import com.spring.jwt.ContactDetails.ContactMapper;
+import com.spring.jwt.ContactDetails.ContactService;
 import com.spring.jwt.Document.DocumentService;
 import com.spring.jwt.EducationAndProfession.EducationDTO;
 import com.spring.jwt.EducationAndProfession.EducationService;
@@ -17,6 +20,7 @@ import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.mapper.DisplayProfileMapper;
 import com.spring.jwt.profile.ProfileDTO;
 import com.spring.jwt.profile.ProfileService;
+import com.spring.jwt.utils.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,15 +32,17 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
 
     private final CompleteProfileRepository completeProfileRepository;
     private final FullProfileMapper mapper;
+//
+//    private final ProfileService profileService;
+//    private final EducationService educationService;
+//    private final HoroscopeDetailsService horoscopeService;
+//    private final FamilyBackgroundService familyService;
+//    private final PartnerPreferenceService partnerPreferenceService;
+//    private final DisplayProfileMapper displayProfileMapper;
+//    private final ContactService contactService;
+//    private final DocumentService documentService;
 
-    private final ProfileService profileService;
-    private final EducationService educationService;
-    private final HoroscopeDetailsService horoscopeService;
-    private final FamilyBackgroundService familyService;
-    private final PartnerPreferenceService partnerPreferenceService;
-    private final DisplayProfileMapper displayProfileMapper;
-    private final DocumentService documentService;
-
+    @Override
     public FullProfileDTO getFullProfile(Integer userId) {
 
         CompleteProfile cp = completeProfileRepository
@@ -46,26 +52,33 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
         return mapper.toDTO(cp);
     }
 
-    public DisplayProfileDTO getDisplayProfile(Integer userId) {
+    @Override
+    public FullProfileDTO getDisplayProfile(Integer userId) {
 
-        ProfileDTO profile = profileService.getProfile(userId);
-        EducationDTO education = educationService.getEducationAndProfession(userId);
-        HoroscopeDTO horoscope = horoscopeService.getHoroscopeById(userId);
-        FamilyBackgroundDTO family = familyService.getBackground(userId);
-        PartnerPreferenceDTO partnerPreference= partnerPreferenceService.getPreference(userId);
-        // Get only ONE profile photo
-       // DocumentDTO profilePhoto = documentService.getDocumentByName(do)
+        CompleteProfile cp = completeProfileRepository
+                .findFullProfileByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundExceptions("profile not found for userId : " + userId));
 
-        return displayProfileMapper.toDTO(
-                profile,
-                education,
-                horoscope,
-                family,
-               partnerPreference
+        return mapper.toDTO(cp);
+//        ProfileDTO profile = profileService.getProfile(userId);
+//        EducationDTO education = educationService.getEducationAndProfession(userId);
+//        HoroscopeDTO horoscope = horoscopeService.getHoroscopeById(userId);
+//        FamilyBackgroundDTO family = familyService.getBackground(userId);
+//        PartnerPreferenceDTO partnerPreference= partnerPreferenceService.getPreference(userId);
+//        ContactDTO contactDTO = contactService.getContactDetails(userId);
+//        // Get only ONE profile photo
+//       // DocumentDTO profilePhoto = documentService.getDocumentByName(do)
+//
+//        return displayProfileMapper.toDTO(
+//                profile,
+//                education,
+//                horoscope,
+//                family,
+//               partnerPreference
 
-        );
     }
 
+    @Override
     public Page<PublicProfileDTO> getProfileByGender(Pageable pageable, Gender gender) {
         Page<CompleteProfile> profiles =
                 completeProfileRepository.findByUserProfileGender(gender, pageable);

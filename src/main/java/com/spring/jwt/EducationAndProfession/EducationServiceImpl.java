@@ -3,6 +3,7 @@ package com.spring.jwt.EducationAndProfession;
 import com.spring.jwt.CompleteProfile.CompleteProfileRepository;
 import com.spring.jwt.HoroscopeDetails.HelperUtil;
 import com.spring.jwt.entity.CompleteProfile;
+import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.DuplicateResourceException;
@@ -89,6 +90,22 @@ public class EducationServiceImpl implements EducationService {
         return educationRepository.findByUserId(userId).map(mapper::toDTO)
                 .orElseThrow(()-> new ResourceNotFoundException
                         ("education and profession details not found for userId"));
+    }
+
+    @Transactional
+    @Override
+    public BaseResponseDTO deleteEducationDetails(Integer userID) {
+
+        EducationAndProfession educationDetails = educationRepository.findByUserId(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("education details not found"));
+
+        educationRepository.delete(educationDetails);
+
+        BaseResponseDTO response = new BaseResponseDTO();
+        response.setCode("200");
+        response.setMessage("education details deleted Successfully");
+
+        return response;
     }
 
 }

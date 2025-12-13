@@ -57,4 +57,15 @@ public class FamilyBackgroundController {
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success("Family Background Updated Successfully !"));
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<BaseResponseDTO> deleteFamilyDetails(){
+
+        Integer userId = SecurityUtil.getCurrentUserId();
+        BaseResponseDTO response = service.deleteFamilyDetails(userId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 }
