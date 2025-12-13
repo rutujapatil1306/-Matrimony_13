@@ -43,7 +43,7 @@ public class UserProfile {
     private String mobileNumber;
 
     @Column(nullable = false, unique = true, length = 100)
-    private String mail;
+    private String email;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -19,7 +19,7 @@ public class ContactDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer contactId;
 
-    @Column(length = 45)
+    @Column
     private String fullAddress;
 
     @Column(length = 45, nullable = false)
