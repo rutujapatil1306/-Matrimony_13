@@ -1,7 +1,9 @@
 package com.spring.jwt.utils;
 
+import com.spring.jwt.exception.InvalidTokenException;
 import com.spring.jwt.service.security.UserDetailsCustom;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public final class SecurityUtil {
@@ -14,7 +16,8 @@ public final class SecurityUtil {
                 .getAuthentication();
 
         if (authentication == null) {
-            throw new IllegalStateException("No authenticated user found");
+            throw new AuthenticationException("No authenticated user found") {
+            };
         }
 
         // Case 1: We stored userId in details
@@ -28,6 +31,6 @@ public final class SecurityUtil {
             return customUser.getUserId(); // adjust method name as per your class
         }
 
-        throw new IllegalStateException("User ID not found in security context");
+        throw new InvalidTokenException("User ID not found in security context");
     }
 }

@@ -5,6 +5,7 @@ import com.spring.jwt.HoroscopeDetails.HelperUtil;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.exception.DuplicateResourceException;
 import com.spring.jwt.exception.EducationNotFoundException;
 import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
@@ -12,6 +13,7 @@ import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,24 +30,33 @@ public class EducationServiceImpl implements EducationService {
     @Transactional
     @Override
     public BaseResponseDTO createEducationAndProfession(Integer userId, EducationDTO educationDTO) {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
-        EducationAndProfession save = mapper.toEntity(educationDTO);
-        save.setUser(user);
-        educationRepository.save(save);
+        // PREVENT DUPLICATE BEFORE SAVE (BEST)
+        if (educationRepository.existsByUserId(userId)) {
+            throw new DuplicateResourceException(
+                    "Education and profession details already exist for this user"
+            );
+        }
 
-        CompleteProfile completeProfile1 =  completeProfileRepository.findByUserId(userId);
-        completeProfile1.setEducationAndProfession(save);
-        completeProfileRepository.save(completeProfile1);
+        EducationAndProfession educationAndProfession = mapper.toEntity(educationDTO);
+        educationAndProfession.setUser(user);
+        educationRepository.save(educationAndProfession);
+
+        CompleteProfile completeProfile = completeProfileRepository.findByUserId(userId);
+        completeProfile.setEducationAndProfession(educationAndProfession);
+        completeProfileRepository.save(completeProfile);
 
         BaseResponseDTO response = new BaseResponseDTO();
         response.setCode("201");
         response.setMessage("Education and profession details Saved Successfully");
-        response.setID(save.getEducationId());
+        response.setID(educationAndProfession.getEducationId());
 
         return response;
     }
+
 
     @Transactional
     @Override
