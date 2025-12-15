@@ -80,30 +80,8 @@ public class InterestController {
         return ResponseEntity.ok(
                 ApiResponse.success("Sent interest record retrieved successfully", sent));
 
-    }
+     }
 
-//    @GetMapping("/pending/inReceived")
-//    public Page<InterestResponseDTO> getPendingReceived(
-//            @RequestParam(defaultValue = "0") @Min(value = 0, message = "Page number cannot be negative") int page,
-//            @RequestParam(defaultValue = "10") @Min(value = 1, message = "Page size must be at least 1")
-//            @Max(value = 30, message = "Page size cannot exceed 30") int size) {
-//
-//        Integer userId = SecurityUtil.getCurrentUserId();
-//        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-//
-//        return service.getPendingReceived(userId, pageable);
-//    }
-//
-//    @GetMapping("/pending/inSent")
-//    public Page<InterestResponseDTO> getPendingSent(
-//            @RequestParam(defaultValue = "0") @Min(value = 0, message = "Page number cannot be negative") int page,
-//            @RequestParam(defaultValue = "10") @Min(value = 1, message = "Page size must be at least 1")
-//            @Max(value = 30, message = "Page size cannot exceed 30") int size) {
-//
-//        Integer userId = SecurityUtil.getCurrentUserId();
-//        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-//
-//        return service.getPendingSent(userId, pageable);
-    }
+}
 
 

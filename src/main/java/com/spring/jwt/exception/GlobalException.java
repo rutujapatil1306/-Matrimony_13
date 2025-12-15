@@ -198,6 +198,30 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(InvalidInterestException.class)
+    public ResponseEntity<ErrorResponseDto> handleInvalidInterestException(InvalidInterestException exception , WebRequest webRequest){
+        log.error("Invalid interest input: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidGenderException.class)
+    public ResponseEntity<ErrorResponseDto> handleInvalidGenderException(InvalidGenderException exception , WebRequest webRequest){
+        log.error("Invalid gender input: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(FamilyBackgroundNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleFamilyBackgroundNotFoundException(FamilyBackgroundNotFoundException exception , WebRequest webRequest){
         log.error("Family background details not found: {}", exception.getMessage());
