@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 @Repository
 public interface ExpressInterestRepository extends JpaRepository<ExpressInterest, Long> {
 
@@ -18,4 +20,5 @@ public interface ExpressInterestRepository extends JpaRepository<ExpressInterest
     Page<ExpressInterest> findByToUserIdAndStatus(Integer toUserId, InterestStatus status, Pageable pageable);
     Page<ExpressInterest> findByFromUserIdAndStatus(Integer fromUserId, InterestStatus status, Pageable pageable);
 
+    Optional<ExpressInterest> findByInterestIdAndToUserId(Long interestId, Integer currentUserId);
 }

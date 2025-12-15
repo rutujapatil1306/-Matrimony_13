@@ -70,12 +70,20 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
             throw new MissingParameterException("Interest ID cannot be null");
         }
 
-        ExpressInterest interest = interestRepository.findById(interestId)
+        ExpressInterest interest = interestRepository
+                .findByInterestIdAndToUserId(interestId, currentUserId)
+                .orElseThrow(() ->
+                        new InvalidInterestException("Invalid interest ID or unauthorized access")
+                );
+
+        if (interest.getStatus() != InterestStatus.PENDING) {
+            throw new InvalidInterestException(
+                    "Interest already"+" "+interest.getStatus());
+        }
+
+        interestRepository.findById(interestId)
                 .orElseThrow(() -> new InterestNotFoundException("Interest request not found"));
 
-        if (!interest.getToUser().getId().equals(currentUserId)) {
-            throw new SecurityException("You are not authorized to accept this request");
-        }
 
         interest.setStatus(InterestStatus.ACCEPTED);
         interest.setRespondedAt(LocalDateTime.now());
@@ -94,12 +102,20 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
             throw new MissingParameterException("Interest ID cannot be null");
         }
 
-        ExpressInterest interest = interestRepository.findById(interestId)
+        ExpressInterest interest = interestRepository
+                .findByInterestIdAndToUserId(interestId, currentUserId)
+                .orElseThrow(() ->
+                        new InvalidInterestException("Invalid interest ID or unauthorized access")
+                );
+
+        if (interest.getStatus() != InterestStatus.PENDING) {
+            throw new InvalidInterestException(
+                    "Interest already"+" "+interest.getStatus());
+        }
+
+                 interestRepository.findById(interestId)
                 .orElseThrow(() -> new InterestNotFoundException("Interest request not found"));
 
-        if (!interest.getToUser().getId().equals(currentUserId)) {
-            throw new SecurityException("You are not authorized to decline this request");
-        }
 
         interest.setStatus(InterestStatus.DECLINED);
         interest.setRespondedAt(LocalDateTime.now());
@@ -123,19 +139,5 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
                 interestRepository.findByFromUserIdAndStatus(userId, status, pageable);
         return result.map(mapper::toDTO);
     }
-//
-//    @Override
-//    public Page<InterestResponseDTO> getPendingReceived(Integer userId, Pageable pageable) {
-//
-//        Page<ExpressInterest> page = interestRepository.findByToUserIdAndStatus(userId, InterestStatus.PENDING, pageable);
-//        return page.map(mapper::toDTO);
-//    }
-//
-//    @Override
-//    public Page<InterestResponseDTO> getPendingSent(Integer userId, Pageable pageable) {
-//
-//        Page<ExpressInterest> page = interestRepository.findByFromUserIdAndStatus(userId, InterestStatus.PENDING, pageable);
-//        return page.map(mapper::toDTO);
-//    }
 
 }
