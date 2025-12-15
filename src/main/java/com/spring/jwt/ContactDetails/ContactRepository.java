@@ -17,4 +17,6 @@ public interface ContactRepository extends JpaRepository<ContactDetails,Integer>
     void deleteByUserId(Integer userID);
 
     boolean existsByMobileNumber(String mobileNumber);
+
+    boolean existsByUserId(Integer userId);
 }

@@ -42,7 +42,7 @@ public class SearchServiceImpl implements SearchFilterService {
 
         // From UserProfile table
         if (cp.getUserProfile() != null) {
-            dto.setFirstName(cp.getUserProfile().getFirstName());
+            dto.setLastName(cp.getUserProfile().getLastName());
             dto.setGender(cp.getUserProfile().getGender());
             dto.setDateOfBirth(cp.getHoroscopeDetails().getDob());
             dto.setHeight(cp.getUserProfile().getHeight());

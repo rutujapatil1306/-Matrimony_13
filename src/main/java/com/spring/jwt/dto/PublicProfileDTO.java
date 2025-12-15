@@ -11,7 +11,7 @@ import java.util.Date;
 public class  PublicProfileDTO {
 
     private Integer userId;
-    private String firstName;
+    private String lastName;
     private Date dateOfBirth;
 
     @Enumerated(EnumType.STRING)

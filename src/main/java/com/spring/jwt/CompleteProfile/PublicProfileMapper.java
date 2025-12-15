@@ -15,7 +15,7 @@ public class PublicProfileMapper {
         PublicProfileDTO dto = new PublicProfileDTO();
 
         dto.setUserId(profile.getUser().getId());
-        dto.setFirstName(profile.getUserProfile().getFirstName());
+        dto.setLastName(profile.getUserProfile().getLastName());
         dto.setGender(profile.getUserProfile().getGender());
         dto.setCity(profile.getContactDetails().getCity());
         dto.setEducation(profile.getEducationAndProfession().getEducation());
