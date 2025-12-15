@@ -186,6 +186,18 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(InterestAlreadySentException.class)
+    public ResponseEntity<ErrorResponseDto> handleInterestAlreadySentException(InterestAlreadySentException exception , WebRequest webRequest){
+        log.error("Interest already sent: {}", exception.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.CONFLICT,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(FamilyBackgroundNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleFamilyBackgroundNotFoundException(FamilyBackgroundNotFoundException exception , WebRequest webRequest){
         log.error("Family background details not found: {}", exception.getMessage());

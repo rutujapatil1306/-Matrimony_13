@@ -32,15 +32,7 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
 
     private final CompleteProfileRepository completeProfileRepository;
     private final FullProfileMapper mapper;
-//
-//    private final ProfileService profileService;
-//    private final EducationService educationService;
-//    private final HoroscopeDetailsService horoscopeService;
-//    private final FamilyBackgroundService familyService;
-//    private final PartnerPreferenceService partnerPreferenceService;
-//    private final DisplayProfileMapper displayProfileMapper;
-//    private final ContactService contactService;
-//    private final DocumentService documentService;
+
 
     @Override
     public FullProfileDTO getFullProfile(Integer userId) {
@@ -60,21 +52,6 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
                 .orElseThrow(() -> new UserNotFoundExceptions("profile not found for userId : " + userId));
 
         return mapper.toDTO(cp);
-//        ProfileDTO profile = profileService.getProfile(userId);
-//        EducationDTO education = educationService.getEducationAndProfession(userId);
-//        HoroscopeDTO horoscope = horoscopeService.getHoroscopeById(userId);
-//        FamilyBackgroundDTO family = familyService.getBackground(userId);
-//        PartnerPreferenceDTO partnerPreference= partnerPreferenceService.getPreference(userId);
-//        ContactDTO contactDTO = contactService.getContactDetails(userId);
-//        // Get only ONE profile photo
-//       // DocumentDTO profilePhoto = documentService.getDocumentByName(do)
-//
-//        return displayProfileMapper.toDTO(
-//                profile,
-//                education,
-//                horoscope,
-//                family,
-//               partnerPreference
 
     }
 

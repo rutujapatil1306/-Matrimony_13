@@ -6,10 +6,7 @@ import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserProfile;
-import com.spring.jwt.exception.ContactNotFoundException;
-import com.spring.jwt.exception.ResourceNotFoundException;
-import com.spring.jwt.exception.UserAlreadyExistException;
-import com.spring.jwt.exception.UserNotFoundExceptions;
+import com.spring.jwt.exception.*;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
@@ -32,6 +29,12 @@ public class ContactServiceImpl implements ContactService {
     public BaseResponseDTO createContactDetails(Integer userId, ContactDTO contactDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
+
+        if (contactRepository.existsByUserId(userId)) {
+            throw new DuplicateResourceException(
+                    "Contact details already exist for this user"
+            );
+        }
 
         if (contactRepository.existsByMobileNumber(contactDTO.getMobileNumber())) {
             throw new UserAlreadyExistException("Mobile number already exists");

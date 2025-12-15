@@ -26,6 +26,11 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
     @Override
     public void sendInterest(Integer fromUserId, Integer toUserId) {
 
+        boolean exists = interestRepository.existsByFromUserIdAndToUserId(fromUserId, toUserId);
+        if (exists) {
+            throw new InterestAlreadySentException("Interest already sent to this user.");
+        }
+
         if (fromUserId.equals(toUserId)) {
             throw new InvalidOperationException("You cannot send interest to yourself.");
         }
@@ -41,11 +46,6 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
 
         if (senderGender == receiverGender) {
             throw new InvalidOperationException("You can send interest only to opposite gender.");
-        }
-
-        boolean exists = interestRepository.existsByFromUserIdAndToUserId(fromUserId, toUserId);
-        if (exists) {
-            throw new InterestAlreadySentException("Interest already sent to this user.");
         }
 
         ExpressInterest interest = new ExpressInterest();
@@ -64,10 +64,10 @@ public class ExpressInterestServiceImpl implements ExpressInterestService {
     public InterestResponseDTO acceptInterest(Integer currentUserId, Long interestId) {
 
         if (currentUserId == null) {
-            throw new IllegalArgumentException("Current user ID cannot be null");
+            throw new MissingParameterException("Current user ID cannot be null");
         }
         if (interestId == null) {
-            throw new IllegalArgumentException("Interest ID cannot be null");
+            throw new MissingParameterException("Interest ID cannot be null");
         }
 
         ExpressInterest interest = interestRepository.findById(interestId)

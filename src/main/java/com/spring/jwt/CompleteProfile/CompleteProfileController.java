@@ -45,7 +45,7 @@ public class CompleteProfileController {
     }
 
     @GetMapping("/getProfileByGender")
-    public Page<PublicProfileDTO> getProfile(
+    public ResponseEntity<ApiResponse<Page<PublicProfileDTO>>> getProfile(
             @RequestParam(defaultValue = "0") @Min(value = 0, message = "Page number cannot be negative") int page,
             @RequestParam(defaultValue = "10") @Min(value = 1, message = "Page size must be at least 1")
             @Max(value = 30, message = "Page size cannot exceed 30") int size,
@@ -53,6 +53,10 @@ public class CompleteProfileController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("completeProfileId").descending());
 
-        return completeProfileService.getProfileByGender(pageable, gender);
+        Page<PublicProfileDTO> profileByGender = completeProfileService.getProfileByGender(pageable, gender);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(gender +" "+"profiles fetched successfully", profileByGender));
     }
 }
