@@ -1,5 +1,6 @@
 package com.spring.jwt.SearchFiltter;
 
+import com.spring.jwt.Enums.Gender;
 import com.spring.jwt.entity.CompleteProfile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public interface SearchProfileRepository extends JpaRepository<CompleteProfile, 
         AND (:district IS NULL OR LOWER(up.district) LIKE LOWER(CONCAT('%', :district, '%')))
         """)
     Page<CompleteProfile> searchProfiles(
-            String gender,
+            Gender gender,
             String maritalStatus,
             Integer ageFrom,
             Integer ageTo,

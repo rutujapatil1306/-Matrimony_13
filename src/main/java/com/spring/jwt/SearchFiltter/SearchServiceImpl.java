@@ -47,7 +47,7 @@ public class SearchServiceImpl implements SearchFilterService {
             dto.setDateOfBirth(cp.getHoroscopeDetails().getDob());
             dto.setHeight(cp.getUserProfile().getHeight());
              // dto.setNativeDistrict(cp.getUserProfile().getNativeDistrict());
-            // dto.setMaritalStatus(cp.getUserProfile().getMaritalStatus());
+             dto.setMaritalStatus(cp.getUserProfile().getMaritalStatus());
         }
 
         // From Education & Professional table
