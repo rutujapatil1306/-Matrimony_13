@@ -43,11 +43,11 @@ public class DocumentServiceImpl implements DocumentService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
-        if (documentRepository.existsByUserId(userId)) {
-            throw new DuplicateResourceException(
-                    "Documents already exist for this user"
-            );
-        }
+//        if (documentRepository.existsByUserId(userId)) {
+//            throw new DuplicateResourceException(
+//                    "Documents already exist for this user"
+//            );
+//        }
 
         if (files == null || files.isEmpty()) {
             throw new IllegalArgumentException("Please upload at least one file");
