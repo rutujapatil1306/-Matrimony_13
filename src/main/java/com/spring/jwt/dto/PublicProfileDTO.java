@@ -13,6 +13,7 @@ public class  PublicProfileDTO {
     private Integer userId;
     private String lastName;
     private Date dateOfBirth;
+    private String maritalStatus;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;

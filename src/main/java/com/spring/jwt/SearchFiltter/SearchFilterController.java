@@ -1,6 +1,7 @@
 package com.spring.jwt.SearchFiltter;
 
 
+import com.spring.jwt.Enums.Gender;
 import com.spring.jwt.dto.PublicProfileDTO;
 import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.SecurityUtil;
@@ -34,7 +35,7 @@ public class SearchFilterController {
             @Min(value = 1, message = "Page size must be at least 1")
             @Max(value = 30, message = "Page size cannot exceed 30") int size,
 
-            @RequestParam(required = false) String gender,
+            @RequestParam(required = false) Gender gender,
             @RequestParam(required = false) String maritalStatus,
             @RequestParam(required = false) Integer ageFrom,
             @RequestParam(required = false) Integer ageTo,
