@@ -62,10 +62,12 @@ public class ContactServiceImpl implements ContactService {
         ContactDetails existingContact = contactRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contact Details not found"));
 
+        ContactDTO dto =  ContactMapper.toDTO(existingContact);
+
         ApiResponse response = new ApiResponse();
         response.setStatusCode(200);
         response.setMessage("Contact details retrieved successfully");
-        response.setData(existingContact);
+        response.setData(dto);
 
         return response;
     }
