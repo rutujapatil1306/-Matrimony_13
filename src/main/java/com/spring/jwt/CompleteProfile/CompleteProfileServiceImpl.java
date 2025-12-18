@@ -16,6 +16,7 @@ import com.spring.jwt.dto.DisplayProfileDTO;
 import com.spring.jwt.dto.PublicProfileDTO;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.Enums.Gender;
+import com.spring.jwt.exception.InvalidGenderException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.mapper.DisplayProfileMapper;
 import com.spring.jwt.profile.ProfileDTO;
@@ -57,6 +58,11 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
 
     @Override
     public Page<PublicProfileDTO> getProfileByGender(Pageable pageable, Gender gender) {
+
+        if (gender == null) {
+            throw new InvalidGenderException("Gender must be provided");
+        }
+
         Page<CompleteProfile> profiles =
                 completeProfileRepository.findByUserProfileGender(gender, pageable);
 
