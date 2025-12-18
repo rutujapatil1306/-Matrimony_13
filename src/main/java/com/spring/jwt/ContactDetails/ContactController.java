@@ -41,7 +41,7 @@ public class ContactController {
 
     @PatchMapping("/update")
     public ResponseEntity<ApiResponse<ContactDetails>> updateByUserID(
-            @RequestBody @Valid ContactDTO contactDTO){
+            @RequestBody ContactDTO contactDTO){
 
         Integer userId = SecurityUtil.getCurrentUserId();
         ApiResponse response = contactService.updateContactDetails(userId,contactDTO);

@@ -48,7 +48,7 @@ public class FamilyBackgroundController {
 
     @PatchMapping("/update")
     public ResponseEntity<ApiResponse<FamilyBackgroundDTO>> updateFamilyBackground(
-            @RequestBody @Valid FamilyBackgroundDTO dto){
+            @RequestBody  FamilyBackgroundDTO dto){
 
         Integer userId = SecurityUtil.getCurrentUserId();
          service.updateBackground(userId, dto);

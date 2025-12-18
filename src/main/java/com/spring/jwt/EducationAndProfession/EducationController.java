@@ -31,7 +31,7 @@ public class EducationController {
 
     @PatchMapping("/update")
     public ResponseEntity<ApiResponse<EducationDTO>> updateEducationAndProfession(
-            @RequestBody @Valid EducationDTO educationDTO){
+            @RequestBody EducationDTO educationDTO){
 
         Integer userId = SecurityUtil.getCurrentUserId();
         ApiResponse response = educationAndProfessionService.updateEducationAndProfession(userId, educationDTO);

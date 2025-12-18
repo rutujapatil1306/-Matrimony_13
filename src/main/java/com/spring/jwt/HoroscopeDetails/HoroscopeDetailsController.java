@@ -48,7 +48,7 @@ public class HoroscopeDetailsController {
 
     @PatchMapping("/update")
     public ResponseEntity<ApiResponse<HoroscopeDTO>> updateHoroscope(
-            @RequestBody @Valid HoroscopeDTO horoscopeDTO){
+            @RequestBody  HoroscopeDTO horoscopeDTO){
 
         Integer userId = SecurityUtil.getCurrentUserId();
         horoscopeDetailsService.updateHoroscope(userId, horoscopeDTO);
