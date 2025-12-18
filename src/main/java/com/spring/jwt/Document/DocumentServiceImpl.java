@@ -34,86 +34,190 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final ObjectMapper objectMapper = new ObjectMapper(); // For JSON convert
 
-
-
-
     @Override
-    public BaseResponseDTO uploadDocument(Integer userId, List<String> documentName, List<MultipartFile> files) {
+    public BaseResponseDTO uploadDocument(
+            Integer userId,
+            List<String> documentName,
+            List<MultipartFile> files
+    ) {
 
+        // 1️⃣ Validate User
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
-//        if (documentRepository.existsByUserId(userId)) {
-//            throw new DuplicateResourceException(
-//                    "Documents already exist for this user"
-//            );
-//        }
-
+        // 2️⃣ Validate files
         if (files == null || files.isEmpty()) {
             throw new IllegalArgumentException("Please upload at least one file");
         }
 
-        if (documentName.size() != files.size()) {
-            throw new MissingDocumentNameException("Each file must have a corresponding document name");
+        // 3️⃣ Validate document names
+        if (documentName == null || documentName.size() != files.size()) {
+            throw new MissingDocumentNameException(
+                    "Each file must have a corresponding document name"
+            );
         }
 
+        // 4️⃣ Validate Complete Profile
         CompleteProfile completeProfile = completeProfileRepository.findByUserId(userId);
         if (completeProfile == null) {
-            throw new UserNotFoundExceptions("Complete profile not found for user: " + userId);
+            throw new UserNotFoundExceptions(
+                    "Complete profile not found for user: " + userId
+            );
         }
 
-        List<Integer> documentIdList = convertJsonToList(completeProfile.getDocumentIds());
+        // 5️⃣ Get existing document IDs
+        List<Integer> documentIdList =
+                convertJsonToList(completeProfile.getDocumentIds());
 
-
+        // 6️⃣ Process each file
         for (int i = 0; i < files.size(); i++) {
 
             MultipartFile file = files.get(i);
             String docType = documentName.get(i);
 
-            String contentType = file.getContentType();
-
-            if (!isAllowedFile(contentType)) {
-                throw new RuntimeException("Only PDF, JPEG, JPG, PNG allowed");
+            // 6.1️⃣ Check original file size (BEFORE compression)
+            long originalSize = file.getSize();
+            if (originalSize > (10 * 1024 * 1024)) {
+                throw new RuntimeException(
+                        "Original file size exceeds 10MB for document: " + docType
+                );
             }
 
+            // 6.2️⃣ Validate file type
+            String contentType = file.getContentType();
+            if (contentType == null || !isAllowedFile(contentType)) {
+                throw new RuntimeException(
+                        "Invalid file type for document: " + docType
+                );
+            }
+
+            // 6.3️⃣ Compress file
             byte[] compressedBytes;
             try {
-                if (contentType.equals("application/pdf")) {
+                if ("application/pdf".equals(contentType)) {
                     compressedBytes = compressPDF(file);
                 } else {
                     compressedBytes = compressImage(file);
                 }
             } catch (Exception e) {
-                throw new RuntimeException("Error during file compression: " + e.getMessage());
+                throw new RuntimeException(
+                        "Error during file compression for " + docType,
+                        e
+                );
             }
 
-            // Size validation (after compression)
+            // 6.4️⃣ Check compressed file size (AFTER compression)
             if (compressedBytes.length > (5 * 1024 * 1024)) {
-                throw new RuntimeException("File exceeds 5MB after compression");
+                throw new RuntimeException(
+                        "File exceeds 5MB after compression for document: " + docType
+                );
             }
 
+            // 6.5️⃣ Save document
             Document document = new Document();
             document.setUser(user);
             document.setDocumentName(docType);
             document.setFileData(compressedBytes);
 
-            Document savedDoc = documentRepository.save(document);
+            Document savedDocument = documentRepository.save(document);
 
-            documentIdList.add(savedDoc.getDocumentId());
+            // 6.6️⃣ Add document ID to list
+            documentIdList.add(savedDocument.getDocumentId());
         }
 
-        completeProfile.setDocumentIds(convertListToJson(documentIdList));
-
+        // 7️⃣ Update CompleteProfile with document IDs
+        completeProfile.setDocumentIds(
+                convertListToJson(documentIdList)
+        );
         completeProfileRepository.save(completeProfile);
 
-        // 7. Response
+        // 8️⃣ Prepare response
         BaseResponseDTO response = new BaseResponseDTO();
         response.setCode("200");
         response.setMessage("Documents uploaded successfully");
 
-
         return response;
     }
+
+
+
+//    @Override
+//    public BaseResponseDTO uploadDocument(Integer userId, List<String> documentName, List<MultipartFile> files) {
+//
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
+//
+////        if (documentRepository.existsByUserId(userId)) {
+////            throw new DuplicateResourceException(
+////                    "Documents already exist for this user"
+////            );
+////        }
+//
+//        if (files == null || files.isEmpty()) {
+//            throw new IllegalArgumentException("Please upload at least one file");
+//        }
+//
+//        if (documentName.size() != files.size()) {
+//            throw new MissingDocumentNameException("Each file must have a corresponding document name");
+//        }
+//
+//        CompleteProfile completeProfile = completeProfileRepository.findByUserId(userId);
+//        if (completeProfile == null) {
+//            throw new UserNotFoundExceptions("Complete profile not found for user: " + userId);
+//        }
+//
+//        List<Integer> documentIdList = convertJsonToList(completeProfile.getDocumentIds());
+//
+//
+//        for (int i = 0; i < files.size(); i++) {
+//
+//            MultipartFile file = files.get(i);
+//            String docType = documentName.get(i);
+//
+//            String contentType = file.getContentType();
+//
+//            if (!isAllowedFile(contentType)) {
+//                throw new RuntimeException("Only PDF, JPEG, JPG, PNG allowed");
+//            }
+//
+//            byte[] compressedBytes;
+//            try {
+//                if (contentType.equals("application/pdf")) {
+//                    compressedBytes = compressPDF(file);
+//                } else {
+//                    compressedBytes = compressImage(file);
+//                }
+//            } catch (Exception e) {
+//                throw new RuntimeException("Error during file compression: " + e.getMessage());
+//            }
+//
+//            // Size validation (after compression)
+//            if (compressedBytes.length > (5 * 1024 * 1024)) {
+//                throw new RuntimeException("File exceeds 5MB after compression");
+//            }
+//
+//            Document document = new Document();
+//            document.setUser(user);
+//            document.setDocumentName(docType);
+//            document.setFileData(compressedBytes);
+//
+//            Document savedDoc = documentRepository.save(document);
+//
+//            documentIdList.add(savedDoc.getDocumentId());
+//        }
+//
+//        completeProfile.setDocumentIds(convertListToJson(documentIdList));
+//
+//        completeProfileRepository.save(completeProfile);
+//
+//        // 7. Response
+//        BaseResponseDTO response = new BaseResponseDTO();
+//        response.setCode("200");
+//        response.setMessage("Documents uploaded successfully");
+//
+//
+//        return response;
+//    }
 
     @Override
     public ApiResponse getDocumentByName(Integer userId, String documentName) {

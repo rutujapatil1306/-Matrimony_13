@@ -34,7 +34,7 @@ public class ProfileController {
 
     @PatchMapping("/update")
     public ResponseEntity<ApiResponse<ProfileDTO>> updateProfile(
-            @RequestBody @Valid ProfileDTO dto){
+            @RequestBody ProfileDTO dto){
 
         Integer userId = SecurityUtil.getCurrentUserId();
         profileService.updateProfile(userId, dto);

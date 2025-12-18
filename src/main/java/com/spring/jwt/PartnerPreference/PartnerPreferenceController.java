@@ -46,7 +46,7 @@ public class PartnerPreferenceController {
 
     @PatchMapping("/update")
     public ResponseEntity<ApiResponse<PartnerPreferenceDTO>> updatePreference(
-            @RequestBody @Valid PartnerPreferenceDTO partnerPreferenceDTO) {
+            @RequestBody PartnerPreferenceDTO partnerPreferenceDTO) {
 
         Integer userId = SecurityUtil.getCurrentUserId();
         partnerPreferenceService.updatePreference(userId, partnerPreferenceDTO);
