@@ -3,6 +3,7 @@ package com.spring.jwt.profile;
 import com.spring.jwt.Enums.Gender;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -55,7 +56,7 @@ public class ProfileDTO {
         @NotNull(message = "Age cannot be empty")
         private Integer age;
 
-        @NotNull(message = "Gender cannot be empty")
+        @NotNull(message = "Gender cannot be empty ")
         @Enumerated(EnumType.STRING)
         private Gender gender;
 

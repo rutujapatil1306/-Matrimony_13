@@ -68,6 +68,11 @@ public class ProfileServiceImpl implements ProfileService {
         UserProfile profile= profileRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
 
+        profileRepository.findByMobileNumberOrEmail(dto.getMobileNumber(), dto.getEmail())
+                .ifPresent(p -> {
+                    throw new UserAlreadyExistException("Mobile Number or Email is already registered!");
+                });
+
         HelperUtil.getDataIfNotNull(dto::getFirstName, profile::setFirstName);
         HelperUtil.getDataIfNotNull(dto::getLastName, profile::setLastName);
         HelperUtil.getDataIfNotNull(dto::getMiddleName, profile::setMiddleName);

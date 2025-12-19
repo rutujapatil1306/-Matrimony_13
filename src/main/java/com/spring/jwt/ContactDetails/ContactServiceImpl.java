@@ -79,6 +79,10 @@ public class ContactServiceImpl implements ContactService {
         ContactDetails existingContact = contactRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contact details not found"));
 
+        if (contactRepository.existsByMobileNumber(contactDTO.getMobileNumber())) {
+            throw new UserAlreadyExistException("Mobile number already exists");
+        }
+
         HelperUtil.getDataIfNotNull(contactDTO::getFullAddress, existingContact::setFullAddress);
         HelperUtil.getDataIfNotNull(contactDTO::getCity, existingContact::setCity);
         HelperUtil.getDataIfNotNull(contactDTO::getPinCode, existingContact::setPinCode);
